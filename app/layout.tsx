@@ -1,8 +1,11 @@
-import { ClerkProvider } from "@clerk/nextjs";
 import type { Metadata } from "next";
 import { Geist, Geist_Mono, Inter, Roboto } from "next/font/google";
 import "./globals.css";
 import { cn } from "@/lib/utils";
+// Personal imports
+import { ClerkProvider } from "@clerk/nextjs";
+import { ModalProvider } from "@/providers/modal-provider";
+import { LoadingProvider } from "@/providers/loading-provider";
 
 const robotoHeading = Roboto({
   subsets: ["latin"],
@@ -32,7 +35,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <ClerkProvider>
+    <ClerkProvider afterSignOutUrl="/">
       <html
         lang="en"
         className={cn(
@@ -45,7 +48,12 @@ export default function RootLayout({
           robotoHeading.variable
         )}
       >
-        <body>{children}</body>
+        <body>
+          {/* Modal Provider */}
+          <ModalProvider />
+          <LoadingProvider />
+          {children}
+        </body>
       </html>
     </ClerkProvider>
   );
