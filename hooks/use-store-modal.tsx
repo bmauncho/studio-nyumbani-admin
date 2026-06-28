@@ -1,3 +1,4 @@
+// ✅ fixed - actually updates the store
 import { create } from "zustand";
 
 interface useStoreModalProps {
@@ -6,8 +7,8 @@ interface useStoreModalProps {
   onClose: () => void;
 }
 
-export const useStoreModal = create<useStoreModalProps>(() => ({
+export const useStoreModal = create<useStoreModalProps>((set) => ({
   isOpen: false,
-  onOpen: () => ({ isOpen: true }),
-  onClose: () => ({ isOpen: false }),
+  onOpen: () => set({ isOpen: true }),
+  onClose: () => set({ isOpen: false }),
 }));

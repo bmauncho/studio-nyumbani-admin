@@ -6,6 +6,7 @@ import { cn } from "@/lib/utils";
 import { ClerkProvider } from "@clerk/nextjs";
 import { ModalProvider } from "@/providers/modal-provider";
 import { LoadingProvider } from "@/providers/loading-provider";
+import { ToastProvider } from "@/providers/toast-provider";
 
 const robotoHeading = Roboto({
   subsets: ["latin"],
@@ -27,6 +28,9 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   title: "Studio Nyumbani Admin",
   description: "Studio Nyumbani Admin Panel",
+  icons: {
+    icon: "/logo/favicon.ico",
+  },
 };
 
 export default function RootLayout({
@@ -39,8 +43,6 @@ export default function RootLayout({
       <html
         lang="en"
         className={cn(
-          "h-full",
-          "antialiased",
           geistSans.variable,
           geistMono.variable,
           "font-sans",
@@ -49,9 +51,9 @@ export default function RootLayout({
         )}
       >
         <body>
-          {/* Modal Provider */}
+          {/*Providers */}
+          <ToastProvider />
           <ModalProvider />
-          <LoadingProvider />
           {children}
         </body>
       </html>
