@@ -31,14 +31,16 @@ export default async function DashBoardLayout({
   }
 
   return (
-    <div className="flex flex-col h-screen">
-      {/* Navbar - full width top */}
-      <Navbar />
+    <div className="flex h-screen">
+      {/* Sidebar - left */}
+      <Sidebar />
 
-      {/* Sidebar + Content side by side */}
-      <div className="flex flex-1 overflow-hidden">
-        <Sidebar />
-        <main className="flex-1 overflow-auto p-4">{children}</main>
+      {/* Navbar + Content - right */}
+      <div className="flex-1 flex flex-col overflow-hidden">
+        <Navbar />
+        <main className="flex-1 overflow-auto">
+          <div className="p-4 pl-24 md:p-7">{children}</div>
+        </main>
       </div>
     </div>
   );
