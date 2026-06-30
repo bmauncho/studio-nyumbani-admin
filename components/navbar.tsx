@@ -1,8 +1,8 @@
 import { UserButton } from "@clerk/nextjs";
-import MainNavbar from "@/components/main-navbar";
 import { redirect } from "next/navigation";
 import prismadb from "@/lib/prismadb";
 import { auth } from "@clerk/nextjs/server";
+import StoreSwitcher from "./store-switcher";
 
 const Navbar = async () => {
   const { userId } = await auth();
@@ -19,7 +19,9 @@ const Navbar = async () => {
   return (
     <div className="sticky top-0 z-30 border-b">
       <div className="flex h-16 items-center px-4 md:px-4 pl-20 md:pl-4">
-        <MainNavbar stores={stores} className="p-2" />
+        <div className="p-2">
+          <StoreSwitcher items={stores} />
+        </div>
         <div className="ml-auto flex flex-col space-x-4">
           <UserButton />
         </div>
