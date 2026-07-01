@@ -11,7 +11,7 @@ const Sidebar = () => {
   return (
     <aside
       className={cn(
-        "fixed md:static left-0 top-0 z-30 md:z-auto h-screen bg-sidebar border-r border-sidebar-border transition-all duration-300 flex flex-col",
+        "fixed md:static left-0 top-0 z-40 md:z-auto h-screen bg-sidebar border-r border-sidebar-border transition-all duration-300 flex flex-col",
         isCollapsed ? "w-auto" : "w-auto"
       )}
     >
