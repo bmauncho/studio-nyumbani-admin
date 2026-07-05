@@ -1,65 +1,61 @@
 "use client";
-
 import { Button } from "@/components/ui/button";
+import EmptyPage from "@/components/ui/empty-page";
 import { Heading } from "@/components/ui/heading";
 import { Separator } from "@/components/ui/separator";
+import { Category } from "@prisma/client";
 import { Plus } from "lucide-react";
-import BillboardCard from "./billboard-card";
 import { useParams, useRouter } from "next/navigation";
-import { Billboard } from "@prisma/client";
 import PaginationControls from "@/components/ui/pagination-controls";
-import EmptyPage from "@/components/ui/empty-page";
+import CategoryCard from "./catagory-card";
+import { CategoryColumn } from "./category-column";
 
-interface BillboardClientProps {
-  data: Billboard[];
+interface CategoriesClientProps {
+  data: CategoryColumn[];
   totalPages: number;
   currentPage: number;
 }
 
-const BillboardClient = ({
+const CategoryClient = ({
   data,
   totalPages,
   currentPage,
-}: BillboardClientProps) => {
+}: CategoriesClientProps) => {
   const router = useRouter();
   const params = useParams();
-  const path = `/${params.storeId}/billboards`;
-
+  const path = `/${params.storeId}/categories`;
   return (
     <>
       <div className="flex items-center justify-between">
         <Heading
-          title="Billboards"
-          description="Manage billboards for your store"
+          title="Categories"
+          description="Manage categories for your store"
         />
         <Button
-          onClick={() => router.push(`/${params.storeId}/billboards/new`)}
+          onClick={() => router.push(`/${params.storeId}/categories/new`)}
         >
           <Plus className="h-4 w-4" />
-          <span className="hidden sm:block ml-2">Add New Billboard</span>
+          <span className="hidden sm:block ml-2">Add New Category</span>
         </Button>
       </div>
       <Separator />
-      {/* Search and filter section */}
       {data.length === 0 ? (
         <EmptyPage
-          title="No billboards found"
-          description="Get started by creating a new billboard."
+          title="No categories found."
+          description="Get Started by creating a new category."
         />
       ) : (
         <div>
-          {/* Billboard cards */}
           <div className="pt-4">
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-              {data.map((billboard) => (
-                <BillboardCard key={billboard.imageUrl} data={billboard} />
+              {data.map((category) => (
+                <CategoryCard key={category.name} category={category} />
               ))}
             </div>
           </div>
-          {/* Pagination */}
           <PaginationControls
-            currentPage={currentPage}
             totalPages={totalPages}
+            currentPage={currentPage}
             path={path}
           />
         </div>
@@ -68,4 +64,4 @@ const BillboardClient = ({
   );
 };
 
-export default BillboardClient;
+export default CategoryClient;

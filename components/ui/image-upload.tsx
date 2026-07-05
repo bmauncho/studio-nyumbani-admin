@@ -65,6 +65,7 @@ const ImageUpload = ({
       <CldUploadWidget onSuccess={onUpload} uploadPreset="studio-nyumbani">
         {({ open }) => {
           const onClick = () => {
+            if (!open) return; // 👈 guard against undefined
             open();
           };
           return (

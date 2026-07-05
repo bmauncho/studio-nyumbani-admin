@@ -15,24 +15,21 @@ const IntegrationsPage = () => {
       <div className="flex-1 space-y-4">
         <Heading title="Intergrations" description="Manage API connections" />
         <Separator />
-
-        <SubHeading
-          title="Store-Api"
-          description="Manage store API connections"
-        />
-        <Separator />
-        <ApiAlert
-          title="NEXT_PUBLIC_API_URL"
-          description={`${origin}/api/${params.storeId}`}
-          variant="public"
-        />
-
-        <ApiList
-          title="Billboards"
-          description="Api calls for billboards."
-          entityName="billboards"
-          entityIdName="billboardId"
-        />
+        <div className="space-y-4">
+          <ApiList title="Store-Api" description="Api calls for store." />
+          <ApiList
+            title="Billboards"
+            description="Api calls for billboards."
+            entityName="billboards"
+            entityIdName="billboardId"
+          />
+          <ApiList
+            title="Categories"
+            description="Api calls for categories."
+            entityName="categories"
+            entityIdName="categoryId"
+          />
+        </div>
       </div>
     </div>
   );
