@@ -1,5 +1,6 @@
 import { cn } from "@/lib/utils";
 import {
+  Droplet,
   LayoutDashboard,
   Palette,
   Ruler,
@@ -55,7 +56,12 @@ export function MainSideBar({
       active: pathname === `/${params.storeId}/sizes`,
       icon: Ruler,
     },
-
+    {
+      href: `/${params.storeId}/colors`,
+      label: "Colors",
+      active: pathname === `/${params.storeId}/colors`,
+      icon: Droplet,
+    },
     {
       href: `/${params.storeId}/intergrations`,
       label: "Intergrations",
