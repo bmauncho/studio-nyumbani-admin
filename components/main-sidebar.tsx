@@ -1,5 +1,12 @@
 import { cn } from "@/lib/utils";
-import { LayoutDashboard, Palette, Settings, Tag, Zap } from "lucide-react";
+import {
+  LayoutDashboard,
+  Palette,
+  Ruler,
+  Settings,
+  Tag,
+  Zap,
+} from "lucide-react";
 import Link from "next/link";
 import { useParams, usePathname } from "next/navigation";
 import { LucideIcon } from "lucide-react";
@@ -42,6 +49,13 @@ export function MainSideBar({
       active: pathname === `/${params.storeId}/billboards`,
       icon: Palette,
     },
+    {
+      href: `/${params.storeId}/sizes`,
+      label: "Sizes",
+      active: pathname === `/${params.storeId}/sizes`,
+      icon: Ruler,
+    },
+
     {
       href: `/${params.storeId}/intergrations`,
       label: "Intergrations",

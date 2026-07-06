@@ -22,7 +22,7 @@ const CategoryPage = async ({
   });
 
   return (
-    <div className="fkex-col">
+    <div className="flex-col">
       <div className="flex-1 space-y-4 ">
         <CategoryForm billboards={billboards} initialData={category} />
       </div>
