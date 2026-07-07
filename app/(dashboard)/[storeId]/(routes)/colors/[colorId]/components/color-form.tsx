@@ -131,8 +131,8 @@ export const ColorForm: React.FC<ColorFormProps> = ({ initialData }) => {
           onSubmit={form.handleSubmit(onSubmit)}
           className="space-y-8 w-full"
         >
-          <div className="grid grid-cols-3 gap-8">
-            <FieldGroup>
+          <FieldGroup>
+            <div className="grid grid-cols-3 gap-8">
               <Controller
                 name="name"
                 control={form.control}
@@ -150,9 +150,6 @@ export const ColorForm: React.FC<ColorFormProps> = ({ initialData }) => {
                   </Field>
                 )}
               />
-            </FieldGroup>
-            {/* ----- Value Field ----- */}
-            <FieldGroup>
               <Controller
                 name="value"
                 control={form.control}
@@ -189,8 +186,8 @@ export const ColorForm: React.FC<ColorFormProps> = ({ initialData }) => {
                   </Field>
                 )}
               />
-            </FieldGroup>
-          </div>
+            </div>
+          </FieldGroup>
           <Button disabled={loading} className="ml-auto" type="submit">
             {action}
           </Button>

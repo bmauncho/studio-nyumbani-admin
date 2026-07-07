@@ -134,8 +134,8 @@ export const CategoryForm = ({
           onSubmit={form.handleSubmit(onSubmit)}
           className="space-y-8 w-full"
         >
-          <div>
-            <FieldGroup className="grid grid-cols-3 gap-8">
+          <FieldGroup>
+            <div className="grid grid-cols-3 gap-8">
               <Controller
                 name="name"
                 control={form.control}
@@ -187,8 +187,8 @@ export const CategoryForm = ({
                   </Field>
                 )}
               />
-            </FieldGroup>
-          </div>
+            </div>
+          </FieldGroup>
           <Button disabled={loading} className="ml-auto" type="submit">
             {action}
           </Button>

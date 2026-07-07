@@ -124,8 +124,8 @@ export const SizeForm = ({ initialData }: SizeFormProps) => {
           onSubmit={form.handleSubmit(onSubmit)}
           className="space-y-8 w-full"
         >
-          <div className="grid grid-cols-3 gap-8">
-            <FieldGroup>
+          <FieldGroup>
+            <div className="grid grid-cols-3 gap-8">
               <Controller
                 name="name"
                 control={form.control}
@@ -143,9 +143,7 @@ export const SizeForm = ({ initialData }: SizeFormProps) => {
                   </Field>
                 )}
               />
-            </FieldGroup>
-            {/* ----- Value Field ----- */}
-            <FieldGroup>
+              {/* ----- Value Field ----- */}
               <Controller
                 name="value"
                 control={form.control}
@@ -166,8 +164,8 @@ export const SizeForm = ({ initialData }: SizeFormProps) => {
                   </Field>
                 )}
               />
-            </FieldGroup>
-          </div>
+            </div>
+          </FieldGroup>
           <Button disabled={loading} className="ml-auto" type="submit">
             {action}
           </Button>

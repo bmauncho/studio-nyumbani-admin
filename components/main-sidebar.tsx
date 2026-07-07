@@ -2,6 +2,7 @@ import { cn } from "@/lib/utils";
 import {
   Droplet,
   LayoutDashboard,
+  Package,
   Palette,
   Ruler,
   Settings,
@@ -37,6 +38,12 @@ export function MainSideBar({
       label: "Overview",
       active: pathname === `/${params.storeId}`,
       icon: LayoutDashboard,
+    },
+    {
+      href: `/${params.storeId}/products`,
+      label: "Products",
+      active: pathname === `/${params.storeId}/products`,
+      icon: Package,
     },
     {
       href: `/${params.storeId}/categories`,

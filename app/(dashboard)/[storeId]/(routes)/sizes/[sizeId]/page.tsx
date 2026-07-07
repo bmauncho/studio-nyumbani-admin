@@ -2,12 +2,8 @@ import prismadb from "@/lib/prismadb";
 import { Params } from "@/types";
 import { SizeForm } from "./components/size-form";
 
-const SizePage = async ({
-  params,
-}: {
-  params: Params<{ sizeId: string; storeId: string }>;
-}) => {
-  const { sizeId, storeId } = await params;
+const SizePage = async ({ params }: { params: Params<{ sizeId: string }> }) => {
+  const { sizeId } = await params;
 
   const size = await prismadb.size.findUnique({
     where: {
