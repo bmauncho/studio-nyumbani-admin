@@ -25,7 +25,6 @@ const ProductPage = async ({
         costPrice: product.costPrice.toNumber(),
         discount: product.discount?.toNumber() ?? 0,
         description: product.description ?? "",
-        images: product.images.map((image) => ({ url: image.url })),
       }
     : null;
 

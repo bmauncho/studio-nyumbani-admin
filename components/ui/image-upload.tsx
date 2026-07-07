@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { CldUploadWidget } from "next-cloudinary";
+import { CldImage, CldUploadWidget } from "next-cloudinary";
 import { ImagePlus, Trash } from "lucide-react";
 import { Button } from "./button";
 import { cn } from "@/lib/utils";
@@ -58,7 +58,14 @@ const ImageUpload = ({
                 <Trash className="h-4 w-4" />
               </Button>
             </div>
-            <Image fill className="object-cover" alt="Image" src={url} />
+            <CldImage
+              fill
+              alt="Image"
+              className="object-cover"
+              src={url}
+              sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+            />
+            {/* <Image fill className="object-cover" alt="Image" src={url} /> */}
           </div>
         ))}
       </div>

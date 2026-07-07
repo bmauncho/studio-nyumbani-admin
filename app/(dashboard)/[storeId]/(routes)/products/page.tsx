@@ -23,6 +23,7 @@ const ProductsPage = async ({
     prismadb.product.findMany({
       where: { storeId },
       include: {
+        images: true,
         category: true,
         size: true,
         color: true,
@@ -37,6 +38,7 @@ const ProductsPage = async ({
   const formattedProducts: ProductColumn[] = products.map((product) => ({
     id: product.id,
     name: product.name,
+    images: product.images.map((image) => image.url),
     desc: product.description ?? "",
     price: formatter.format(product.price.toNumber()),
     costPrice: formatter.format(product.costPrice.toNumber()),

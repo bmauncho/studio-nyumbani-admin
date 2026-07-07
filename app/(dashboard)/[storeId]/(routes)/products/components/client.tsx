@@ -7,6 +7,7 @@ import PaginationControls from "@/components/ui/pagination-controls";
 import EmptyPage from "@/components/ui/empty-page";
 import { Button } from "@/components/ui/button";
 import { Plus } from "lucide-react";
+import ProductCard from "./product-card";
 
 interface ProductsPageProps {
   data: ProductColumn[];
@@ -38,15 +39,15 @@ const ProductClient = ({
       <Separator />
       {data.length === 0 ? (
         <EmptyPage
-          title="No sizes found."
+          title="No Product(s) found."
           description="Get Started by creating a new product(s)."
         />
       ) : (
         <div>
           <div className="pt-4">
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-              {data.map((size) => (
-                <div key={size.name} />
+              {data.map((product) => (
+                <ProductCard key={product.name} product={product} />
               ))}
             </div>
           </div>

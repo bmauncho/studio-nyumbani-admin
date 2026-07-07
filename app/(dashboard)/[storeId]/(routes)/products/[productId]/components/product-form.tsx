@@ -97,10 +97,10 @@ export const ProductForm = ({
           name: "",
           description: "",
           images: [],
-          price: undefined,
-          costPrice: undefined,
-          discount: undefined,
-          stock: undefined,
+          price: 9.99,
+          costPrice: 9.99,
+          discount: 20,
+          stock: 10,
           categoryId: "",
           colorId: "",
           sizeId: "",
@@ -176,7 +176,8 @@ export const ProductForm = ({
       </div>
       <Separator />
       <div>
-        <form>
+        <form onSubmit={form.handleSubmit(onSubmit)}
+          className="space-y-8 w-full">
           <FieldGroup>
             {/* ----- Products Images ----- */}
             <Controller
@@ -457,7 +458,7 @@ export const ProductForm = ({
                   </Field>
                 )}
               />
-                            {/* Discount */}
+              {/* Discount */}
               <Controller
                 name="isDiscounted"
                 control={form.control}

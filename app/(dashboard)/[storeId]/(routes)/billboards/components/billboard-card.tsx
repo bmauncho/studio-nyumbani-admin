@@ -7,6 +7,7 @@ import axios from "axios";
 import { useParams, useRouter } from "next/navigation";
 import { useState } from "react";
 import { AlertModal } from "@/components/modals/alert-modal";
+import { Separator } from "@/components/ui/separator";
 
 interface BillboardCardProps {
   data: Billboard;
@@ -60,6 +61,7 @@ const BillboardCard = ({ data }: BillboardCardProps) => {
         <div className="p-4 space-y-4">
           <div>
             <h3 className="text-lg font-semibold">{data.label}</h3>
+            <Separator />
             <p className="text-sm text-muted-foreground">
               Created at {data.createdAt.toLocaleDateString()}
             </p>

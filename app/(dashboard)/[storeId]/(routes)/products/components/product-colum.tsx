@@ -1,6 +1,7 @@
 export interface ProductColumn {
   id: string;
   name: string;
+  images: string[];
   desc: string;
   price: string;
   costPrice: string;
