@@ -1,18 +1,7 @@
 import { cn } from "@/lib/utils";
-import {
-  Droplet,
-  LayoutDashboard,
-  Package,
-  Palette,
-  Ruler,
-  Settings,
-  ShoppingCart,
-  Tag,
-  Zap,
-} from "lucide-react";
+import { Calendar, Grid3x3, LucideIcon, MessageSquare } from "lucide-react";
 import Link from "next/link";
 import { useParams, usePathname } from "next/navigation";
-import { LucideIcon } from "lucide-react";
 
 interface NavItems {
   href: string;
@@ -24,7 +13,6 @@ interface NavItems {
 interface MainSideBarProps extends React.HTMLAttributes<HTMLElement> {
   IsCollapsed: boolean;
 }
-
 export function MainSideBar({
   className,
   IsCollapsed,
@@ -32,64 +20,26 @@ export function MainSideBar({
 }: MainSideBarProps) {
   const pathname = usePathname();
   const params = useParams();
-
   const routes: NavItems[] = [
     {
-      href: `/${params.storeId}`,
-      label: "Overview",
-      active: pathname === `/${params.storeId}`,
-      icon: LayoutDashboard,
+      href: `/${params.storeId}/inventory`,
+      label: "Inventory",
+      active: pathname === `/${params.storeId}/inventory`,
+      icon: Grid3x3,
     },
     {
-      href: `/${params.storeId}/products`,
-      label: "Products",
-      active: pathname === `/${params.storeId}/products`,
-      icon: Package,
+      href: `/${params.storeId}/bookings`,
+      label: "Bookings",
+      active: pathname === `/${params.storeId}/bookings`,
+      icon: Calendar,
     },
     {
-      href: `/${params.storeId}/categories`,
-      label: "Categories",
-      active: pathname === `/${params.storeId}/categories`,
-      icon: Tag,
-    },
-    {
-      href: `/${params.storeId}/billboards`,
-      label: "Billboards",
-      active: pathname === `/${params.storeId}/billboards`,
-      icon: Palette,
-    },
-    {
-      href: `/${params.storeId}/sizes`,
-      label: "Sizes",
-      active: pathname === `/${params.storeId}/sizes`,
-      icon: Ruler,
-    },
-    {
-      href: `/${params.storeId}/colors`,
-      label: "Colors",
-      active: pathname === `/${params.storeId}/colors`,
-      icon: Droplet,
-    },
-    {
-      href: `/${params.storeId}/orders`,
-      label: "Orders",
-      active: pathname === `/${params.storeId}/orders`,
-      icon: ShoppingCart,
-    },
-    {
-      href: `/${params.storeId}/intergrations`,
-      label: "Intergrations",
-      active: pathname === `/${params.storeId}/intergrations`,
-      icon: Zap,
-    },
-    {
-      href: `/${params.storeId}/settings`,
-      label: "Settings",
-      active: pathname === `/${params.storeId}/settings`,
-      icon: Settings,
+      href: `/${params.storeId}/messages`,
+      label: "Messages",
+      active: pathname === `/${params.storeId}/messages`,
+      icon: MessageSquare,
     },
   ];
-
   return (
     <nav className={cn("flex flex-col gap-1", className)} {...props}>
       {routes.map((route) => (
