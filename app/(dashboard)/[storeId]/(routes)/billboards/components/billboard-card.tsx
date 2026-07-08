@@ -8,6 +8,7 @@ import { useParams, useRouter } from "next/navigation";
 import { useState } from "react";
 import { AlertModal } from "@/components/modals/alert-modal";
 import { Separator } from "@/components/ui/separator";
+import { CldImage } from "next-cloudinary";
 
 interface BillboardCardProps {
   data: Billboard;
@@ -55,7 +56,14 @@ const BillboardCard = ({ data }: BillboardCardProps) => {
       />
       <div className="bg-card rounded-lg border border-border overflow-hidden hover:shadow-lg transition-shadow">
         <div className="relative w-full h-40 aspect-video">
-          <Image src={data.imageUrl} alt="" fill className="object-cover" />
+          <CldImage
+            src={data.imageUrl}
+            alt=""
+            fill
+            className="object-cover"
+            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+            loading="eager"
+          />
         </div>
         {/* bill board info */}
         <div className="p-4 space-y-4">

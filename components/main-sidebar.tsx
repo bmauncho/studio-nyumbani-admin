@@ -6,6 +6,7 @@ import {
   Palette,
   Ruler,
   Settings,
+  ShoppingCart,
   Tag,
   Zap,
 } from "lucide-react";
@@ -68,6 +69,12 @@ export function MainSideBar({
       label: "Colors",
       active: pathname === `/${params.storeId}/colors`,
       icon: Droplet,
+    },
+    {
+      href: `/${params.storeId}/orders`,
+      label: "Orders",
+      active: pathname === `/${params.storeId}/orders`,
+      icon: ShoppingCart,
     },
     {
       href: `/${params.storeId}/intergrations`,
