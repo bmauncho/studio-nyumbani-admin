@@ -18,16 +18,34 @@ const IntegrationsPage = () => {
         <div className="space-y-4">
           <ApiList title="Store-Api" description="Api calls for store." />
           <ApiList
-            title="Billboards"
-            description="Api calls for billboards."
-            entityName="billboards"
-            entityIdName="billboardId"
+            title="Products"
+            description="Api calls for products."
+            entityName="products"
+            entityIdName="productId"
           />
           <ApiList
             title="Categories"
             description="Api calls for categories."
             entityName="categories"
             entityIdName="categoryId"
+          />
+          <ApiList
+            title="Billboards"
+            description="Api calls for billboards."
+            entityName="billboards"
+            entityIdName="billboardId"
+          />
+          <ApiList
+            title="Sizes"
+            description="Api calls for sizes."
+            entityName="sizes"
+            entityIdName="sizeId"
+          />
+          <ApiList
+            title="Colors"
+            description="Api calls for colors."
+            entityName="colors"
+            entityIdName="colorId"
           />
         </div>
       </div>
