@@ -1,5 +1,5 @@
 import { cn } from "@/lib/utils";
-import { Calendar, Grid3x3, LucideIcon, MessageSquare } from "lucide-react";
+import { Calendar, LucideIcon, MessageSquare } from "lucide-react";
 import Link from "next/link";
 import { useParams, usePathname } from "next/navigation";
 
@@ -21,12 +21,6 @@ export function MainSideBar({
   const pathname = usePathname();
   const params = useParams();
   const routes: NavItems[] = [
-    {
-      href: `/${params.storeId}/inventory`,
-      label: "Inventory",
-      active: pathname === `/${params.storeId}/inventory`,
-      icon: Grid3x3,
-    },
     {
       href: `/${params.storeId}/bookings`,
       label: "Bookings",

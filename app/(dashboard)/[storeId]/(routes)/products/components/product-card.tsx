@@ -10,6 +10,7 @@ import { Separator } from "@/components/ui/separator";
 import { Button } from "@/components/ui/button";
 import { Copy, Edit2, Trash } from "lucide-react";
 import { AlertModal } from "@/components/modals/alert-modal";
+import { CldImage } from "next-cloudinary";
 
 interface ProductCardProps {
   product: ProductColumn;
@@ -62,11 +63,12 @@ const ProductCard = ({ product }: ProductCardProps) => {
       <div className="bg-card rounded-lg border border-border overflow-hidden hover:shadow-lg transition-all">
         {/* Image */}
         <div className="relative w-full h-40 bg-secondary">
-          <Image
+          <CldImage
             src={product.images[0]}
             alt=""
             fill
             className="object-cover"
+            loading="eager"
             sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
           />
         </div>

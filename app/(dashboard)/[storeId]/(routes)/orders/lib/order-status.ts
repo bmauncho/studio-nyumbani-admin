@@ -1,4 +1,4 @@
-import { Order } from "@prisma/client";
+import { OrderColumn } from "../components/order-column";
 
 export type OrderStatus = "pending" | "cancelled" | "paid";
 
@@ -8,6 +8,6 @@ export const STATUS_COLORS: Record<OrderStatus, string> = {
   paid: "bg-green-100 text-green-800",
 };
 
-export const getOrderStatus = (order: Order): OrderStatus => {
+export const getOrderStatus = (order: OrderColumn): OrderStatus => {
   return order.isPaid ? "paid" : "pending";
 };

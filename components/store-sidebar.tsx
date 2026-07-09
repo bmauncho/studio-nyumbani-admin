@@ -1,6 +1,7 @@
 import { cn } from "@/lib/utils";
 import {
   Droplet,
+  Grid3x3,
   LayoutDashboard,
   Package,
   Palette,
@@ -69,6 +70,12 @@ export function StoreSideBar({
       label: "Colors",
       active: pathname === `/${params.storeId}/colors`,
       icon: Droplet,
+    },
+    {
+      href: `/${params.storeId}/inventory`,
+      label: "Inventory",
+      active: pathname === `/${params.storeId}/inventory`,
+      icon: Grid3x3,
     },
     {
       href: `/${params.storeId}/orders`,
