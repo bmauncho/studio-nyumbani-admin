@@ -1,5 +1,5 @@
 import { cn } from "@/lib/utils";
-import { Calendar, LucideIcon, MessageSquare } from "lucide-react";
+import { Calendar, LucideIcon } from "lucide-react";
 import Link from "next/link";
 import { useParams, usePathname } from "next/navigation";
 
@@ -26,12 +26,6 @@ export function MainSideBar({
       label: "Bookings",
       active: pathname === `/${params.storeId}/bookings`,
       icon: Calendar,
-    },
-    {
-      href: `/${params.storeId}/messages`,
-      label: "Messages",
-      active: pathname === `/${params.storeId}/messages`,
-      icon: MessageSquare,
     },
   ];
   return (
