@@ -145,3 +145,32 @@ model OrderItem{
   @@index([orderId])
   @@index([productId])
 }
+
+model Booking{
+  id String @id @default(cuid())
+  name    String
+  email   String
+  phone   String
+  service ServiceType
+  date    DateTime
+  time    String
+  message String?
+  status  BookingStatus @default(PENDING)
+  
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+enum ServiceType {
+  CUSTOM_DESIGN
+  ALTERATIONS
+  CONSULTATION
+  FITTING
+}
+
+enum BookingStatus {
+  PENDING
+  CONFIRMED
+  CANCELLED
+  COMPLETED
+}

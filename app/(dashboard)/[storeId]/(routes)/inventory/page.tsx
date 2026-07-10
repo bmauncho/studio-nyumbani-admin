@@ -62,7 +62,7 @@ const InventoryPage = async ({
         <InventoryClient
           data={formattedInventory}
           currentPage={currentPage}
-          totalPages={1}
+          totalPages={totalPages}
         />
       </div>
     </div>
