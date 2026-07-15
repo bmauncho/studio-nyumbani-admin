@@ -5,7 +5,6 @@ import { cn } from "@/lib/utils";
 // Personal imports
 import { ClerkProvider } from "@clerk/nextjs";
 import { ModalProvider } from "@/providers/modal-provider";
-import { LoadingProvider } from "@/providers/loading-provider";
 import { ToastProvider } from "@/providers/toast-provider";
 
 const robotoHeading = Roboto({

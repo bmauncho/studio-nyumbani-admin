@@ -1,5 +1,5 @@
 import { cn } from "@/lib/utils";
-import { Calendar, LucideIcon } from "lucide-react";
+import { BookOpen, Calendar, LucideIcon, MessageSquare } from "lucide-react";
 import Link from "next/link";
 import { useParams, usePathname } from "next/navigation";
 
@@ -21,6 +21,18 @@ export function MainSideBar({
   const pathname = usePathname();
   const params = useParams();
   const routes: NavItems[] = [
+    {
+      href: `/${params.storeId}/cms`,
+      label: "CMS Pages",
+      active: pathname === `/${params.storeId}/cms`,
+      icon: BookOpen,
+    },
+    {
+      href: `/${params.storeId}/messages`,
+      label: "Messages",
+      active: pathname === `/${params.storeId}/messages`,
+      icon: MessageSquare,
+    },
     {
       href: `/${params.storeId}/bookings`,
       label: "Bookings",
