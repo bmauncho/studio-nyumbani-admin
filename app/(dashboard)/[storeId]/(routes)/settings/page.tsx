@@ -3,6 +3,7 @@ import { Params } from "@/types";
 import { auth } from "@clerk/nextjs/server";
 import { redirect } from "next/navigation";
 import { SettingsForm } from "./components/settings-form";
+import IntegrationsPage from "./components/integrations";
 
 interface SettingsPageProps {
   params: Params<{
@@ -33,6 +34,9 @@ const SettingsPage = async ({ params }: SettingsPageProps) => {
     <div className="flex-col">
       <div className="flex-1 space-y-4">
         <SettingsForm initialData={store} />
+      </div>
+      <div className="pt-4">
+        <IntegrationsPage store={store} />
       </div>
     </div>
   );

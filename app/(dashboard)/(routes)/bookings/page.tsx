@@ -1,8 +1,10 @@
 import { Params } from "@/types";
-import BookingsClient from "./components/client";
+
 import prismadb from "@/lib/prismadb";
-import { BookingColumn } from "./components/booking-column";
+
 import { format } from "date-fns";
+import { BookingColumn } from "./components/booking-column";
+import BookingsClient from "./components/client";
 
 const BookingsPage = async ({
   searchParams,

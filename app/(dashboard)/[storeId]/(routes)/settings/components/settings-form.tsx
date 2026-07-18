@@ -69,9 +69,12 @@ export const SettingsForm = ({ initialData }: SettingsFormsProps) => {
 
       router.refresh();
 
-      router.push("/");
+      setTimeout(() => {
+        window.location.assign("/");
+      }, 500);
 
       toast.success("Store deleted.");
+      
     } catch (error) {
       toast.error("Make sure you remove all products and categories first.");
     } finally {

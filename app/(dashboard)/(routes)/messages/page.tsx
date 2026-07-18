@@ -1,5 +1,6 @@
 import MessagesClient from "./components/client";
 
+
 const MessagesPage = () => {
   return (
     <div className="flex-col">

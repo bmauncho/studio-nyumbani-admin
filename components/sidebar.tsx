@@ -6,9 +6,19 @@ import { Menu } from "lucide-react";
 import { StoreSideBar } from "@/components/store-sidebar";
 import { MainSideBar } from "./main-sidebar";
 
-const Sidebar = () => {
-  const [isCollapsed, setIsCollapsed] = useState(false);
+interface SideBarProps {
+  isStore: boolean;
+  storeId?: string;
+}
 
+const Sidebar = ({
+  isStore,
+  storeId,
+}: {
+  isStore: boolean;
+  storeId?: string;
+}) => {
+  const [isCollapsed, setIsCollapsed] = useState(false);
   return (
     <aside
       className={cn(
@@ -19,7 +29,7 @@ const Sidebar = () => {
       <div
         className={cn(
           "flex items-center h-16 px-4 border-b border-sidebar-border",
-          isCollapsed ? "flex justify-center" : "flex justify-end"
+          isCollapsed ? "flex justify-center" : "flex justify-start"
         )}
       >
         <Button
@@ -30,11 +40,14 @@ const Sidebar = () => {
           <Menu />
         </Button>
       </div>
-      {/* Sidebar content */}
       <div className="flex-1 overflow-y-auto">
-        <StoreSideBar IsCollapsed={isCollapsed} className="px-4 py-4" />
+        <StoreSideBar
+          IsCollapsed={isCollapsed}
+          IsStore={isStore}
+          storeId={storeId}
+          className="px-4 py-4"
+        />
       </div>
-      <div className="border-t border-sidebar-border"></div>
       {/* Global routes - pinned to bottom */}
       <div className="shrink-0 border-t border-sidebar-border">
         <MainSideBar IsCollapsed={isCollapsed} className="px-4 py-4" />

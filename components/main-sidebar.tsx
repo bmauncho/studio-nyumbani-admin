@@ -1,7 +1,13 @@
 import { cn } from "@/lib/utils";
-import { BookOpen, Calendar, LucideIcon, MessageSquare } from "lucide-react";
+import {
+  BookOpen,
+  Calendar,
+  LucideIcon,
+  MessageSquare,
+  Zap,
+} from "lucide-react";
 import Link from "next/link";
-import { useParams, usePathname } from "next/navigation";
+import { usePathname } from "next/navigation";
 
 interface NavItems {
   href: string;
@@ -19,25 +25,30 @@ export function MainSideBar({
   ...props
 }: MainSideBarProps) {
   const pathname = usePathname();
-  const params = useParams();
   const routes: NavItems[] = [
     {
-      href: `/${params.storeId}/cms`,
+      href: `/cms`,
       label: "CMS Pages",
-      active: pathname === `/${params.storeId}/cms`,
+      active: pathname === `/cms`,
       icon: BookOpen,
     },
     {
-      href: `/${params.storeId}/messages`,
+      href: `/messages`,
       label: "Messages",
-      active: pathname === `/${params.storeId}/messages`,
+      active: pathname === `/messages`,
       icon: MessageSquare,
     },
     {
-      href: `/${params.storeId}/bookings`,
+      href: `/bookings`,
       label: "Bookings",
-      active: pathname === `/${params.storeId}/bookings`,
+      active: pathname === `/bookings`,
       icon: Calendar,
+    },
+    {
+      href: `/integrations`,
+      label: "Integrations",
+      active: pathname === `/integrations`,
+      icon: Zap,
     },
   ];
   return (

@@ -1,19 +1,33 @@
 "use client";
-import { ApiAlert } from "@/components/ui/api-alert";
 import { ApiList } from "@/components/ui/api-list";
 import { Heading } from "@/components/ui/heading";
 import { Separator } from "@/components/ui/separator";
 import { useOrigin } from "@/hooks/use-origin";
 import { useParams } from "next/navigation";
-import { SubHeading } from "@/components/ui/sub-heading";
+import { Store } from "@prisma/client";
 
-const IntegrationsPage = () => {
-  const origin = useOrigin();
-  const params = useParams();
+interface IntergrationProps {
+  store: Store;
+}
+
+const IntegrationsPage = ({ store }: IntergrationProps) => {
+  const hasStore = (str: string) =>
+    str
+      .toLowerCase()
+      .split(/[\s-_]/)
+      .includes("store");
+
+  const store_name = hasStore(store.name)
+    ? store.name // already has "store" → use as is
+    : `${store.name} Store`; // missing "store" → append it
+
   return (
     <div className="flex-col">
       <div className="flex-1 space-y-4">
-        <Heading title="Intergrations" description="Manage API connections" />
+        <Heading
+          title="Integrations"
+          description={`Manage ${store_name} API connections`}
+        />
         <Separator />
         <div className="space-y-4">
           <ApiList title="Store-Api" description="Api calls for store." />

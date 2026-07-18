@@ -16,6 +16,8 @@ const Navbar = async () => {
       userId,
     },
   });
+
+
   return (
     <div className="sticky top-0 z-30 border-b">
       <div className="flex h-16 items-center px-4 md:px-4 pl-20 md:pl-4">

@@ -1,10 +1,11 @@
 "use client";
 import { Heading } from "@/components/ui/heading";
 import { Separator } from "@/components/ui/separator";
-import MessageCard from "./message-card";
-import { MessageColumn } from "./message-column";
-import MessageDetail from "./message-detail";
+
 import { useState } from "react";
+import { MessageColumn } from "./message-column";
+import MessageCard from "./message-card";
+import MessageDetail from "./message-detail";
 
 const MessagesClient = () => {
   const [selectedMessage, setSelectedMessage] = useState<MessageColumn | null>(

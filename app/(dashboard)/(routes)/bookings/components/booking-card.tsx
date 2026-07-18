@@ -1,13 +1,15 @@
 "use client";
 import { Separator } from "@/components/ui/separator";
-import { BookingColumn } from "./booking-column";
+
 import { Calendar, Clock, Edit2 } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
-import { BOOKING_STATUS_COLORS, getBookingStatus } from "../lib/booking-status";
+
 import { Button } from "@/components/ui/button";
 import { useParams, useRouter } from "next/navigation";
 import { BookingsModal } from "@/components/modals/bookings-modal";
 import { useState } from "react";
+import { BookingColumn } from "./booking-column";
+import { BOOKING_STATUS_COLORS, getBookingStatus } from "../lib/booking-status";
 
 interface BookingCardProps {
   data: BookingColumn;

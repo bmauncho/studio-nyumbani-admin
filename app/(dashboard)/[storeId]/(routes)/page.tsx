@@ -19,7 +19,7 @@ const DashBoardPage = async ({ params }: DashboardPageProps) => {
   return (
     <div className="flex-col">
       <div className="flex-1 space-y-4">
-        <Heading title="Overview" description="Overview of your store" />
+        <Heading title="Dashboard" description="Welcome to your dashboard" />
         <Separator />
       </div>
     </div>

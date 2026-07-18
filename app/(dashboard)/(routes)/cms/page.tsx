@@ -1,5 +1,6 @@
 import CMSClient from "./components/client";
 
+
 const CMSPages = () => {
   return (
     <div className="flex-col">

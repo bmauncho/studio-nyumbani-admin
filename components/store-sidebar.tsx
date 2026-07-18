@@ -2,6 +2,7 @@ import { cn } from "@/lib/utils";
 import {
   Droplet,
   Grid3x3,
+  Home,
   LayoutDashboard,
   Package,
   Palette,
@@ -24,103 +25,130 @@ interface NavItems {
 
 interface MainSideBarProps extends React.HTMLAttributes<HTMLElement> {
   IsCollapsed: boolean;
+  IsStore: boolean;
+  storeId?: string;
 }
 
 export function StoreSideBar({
   className,
   IsCollapsed,
+  IsStore,
+  storeId,
   ...props
 }: MainSideBarProps) {
   const pathname = usePathname();
-  const params = useParams();
 
-  const routes: NavItems[] = [
+  const storeRoutes: NavItems[] = [
     {
-      href: `/${params.storeId}`,
-      label: "Overview",
-      active: pathname === `/${params.storeId}`,
+      href: `/${storeId}`,
+      label: "Dashboard",
+      active: pathname === `/${storeId}`,
       icon: LayoutDashboard,
     },
     {
-      href: `/${params.storeId}/products`,
+      href: `/${storeId}/products`,
       label: "Products",
-      active: pathname === `/${params.storeId}/products`,
+      active: pathname === `/${storeId}/products`,
       icon: Package,
     },
     {
-      href: `/${params.storeId}/categories`,
+      href: `/${storeId}/categories`,
       label: "Categories",
-      active: pathname === `/${params.storeId}/categories`,
+      active: pathname === `/${storeId}/categories`,
       icon: Tag,
     },
     {
-      href: `/${params.storeId}/billboards`,
+      href: `/${storeId}/billboards`,
       label: "Billboards",
-      active: pathname === `/${params.storeId}/billboards`,
+      active: pathname === `/${storeId}/billboards`,
       icon: Palette,
     },
     {
-      href: `/${params.storeId}/sizes`,
+      href: `/${storeId}/sizes`,
       label: "Sizes",
-      active: pathname === `/${params.storeId}/sizes`,
+      active: pathname === `/${storeId}/sizes`,
       icon: Ruler,
     },
     {
-      href: `/${params.storeId}/colors`,
+      href: `/${storeId}/colors`,
       label: "Colors",
-      active: pathname === `/${params.storeId}/colors`,
+      active: pathname === `/${storeId}/colors`,
       icon: Droplet,
     },
     {
-      href: `/${params.storeId}/inventory`,
+      href: `/${storeId}/inventory`,
       label: "Inventory",
-      active: pathname === `/${params.storeId}/inventory`,
+      active: pathname === `/${storeId}/inventory`,
       icon: Grid3x3,
     },
     {
-      href: `/${params.storeId}/orders`,
+      href: `/${storeId}/orders`,
       label: "Orders",
-      active: pathname === `/${params.storeId}/orders`,
+      active: pathname === `/${storeId}/orders`,
       icon: ShoppingCart,
     },
     {
-      href: `/${params.storeId}/intergrations`,
-      label: "Intergrations",
-      active: pathname === `/${params.storeId}/intergrations`,
-      icon: Zap,
-    },
-    {
-      href: `/${params.storeId}/settings`,
+      href: `/${storeId}/settings`,
       label: "Settings",
-      active: pathname === `/${params.storeId}/settings`,
+      active: pathname === `/${storeId}/settings`,
       icon: Settings,
     },
   ];
 
+  const overview: NavItems = {
+    href: `/`,
+    label: "Overview",
+    active: pathname === `/`,
+    icon: Home,
+  };
+
   return (
     <nav className={cn("flex flex-col gap-1", className)} {...props}>
-      {routes.map((route) => (
-        <Link
-          key={route.href}
-          href={route.href}
+      <Link
+        href={overview.href}
+        className={cn(
+          "flex items-center gap-3 px-3 py-2 rounded-md text-sm font-medium transition-colors",
+          overview.active
+            ? "bg-sidebar-accent text-sidebar-accent-foreground"
+            : "text-sidebar-foreground hover:bg-sidebar-accent"
+        )}
+      >
+        <div
           className={cn(
-            "flex items-center gap-3 px-3 py-2 rounded-md text-sm font-medium transition-colors",
-            route.active
-              ? "bg-sidebar-accent text-sidebar-accent-foreground"
-              : "text-sidebar-foreground hover:bg-sidebar-accent"
+            "flex items-center gap-3",
+            IsCollapsed && "justify-center"
           )}
         >
-          <div
-            className={cn(
-              "flex items-center gap-3",
-              IsCollapsed && "justify-center"
-            )}
-          >
-            <route.icon className="h-5 w-5 shrink-0" />
-            {!IsCollapsed && <span>{route.label}</span>}
-          </div>
-        </Link>
-      ))}
+          <overview.icon className="h-5 w-5 shrink-0" />
+          {!IsCollapsed && <span>{overview.label}</span>}
+        </div>
+      </Link>
+      {IsStore && (
+        <>
+          {storeRoutes.map((route) => (
+            <Link
+              key={route.href}
+              href={route.href}
+              className={cn(
+                "flex items-center gap-3 px-3 py-2 rounded-md text-sm font-medium transition-colors",
+                route.active
+                  ? "bg-sidebar-accent text-sidebar-accent-foreground"
+                  : "text-sidebar-foreground hover:bg-sidebar-accent"
+              )}
+            >
+              <div
+                className={cn(
+                  "flex items-center gap-3",
+                  IsCollapsed && "justify-center"
+                )}
+              >
+                <route.icon className="h-5 w-5 shrink-0" />
+                {!IsCollapsed && <span>{route.label}</span>}
+              </div>
+            </Link>
+          ))}
+        </>
+      )}
     </nav>
   );
 }

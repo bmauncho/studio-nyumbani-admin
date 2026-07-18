@@ -25,6 +25,7 @@ import {
   CommandList,
   CommandSeparator,
 } from "./ui/command";
+import { setStoreCookie } from "@/actions/set-store-cookies";
 
 interface StoreSwitcherProps {
   items: Store[];
@@ -49,10 +50,13 @@ export default function StoreSwitcher({
     (item) => item.value === params.storeId
   );
 
-  const onStoreSelected = (store: { value: string; label: string }) => {
+  const onStoreSelected = async (store: { value: string; label: string }) => {
     setOpen(false);
+    await setStoreCookie(store.value);
     router.push(`/${store.value}`);
   };
+
+  const title = currentstore ? currentstore.label : "Create Store";
 
   return (
     <Popover open={open} onOpenChange={setOpen}>
@@ -66,7 +70,7 @@ export default function StoreSwitcher({
           className={cn("w-50 justify-between", className)}
         >
           <StoreIcon className="h-4 w-4 mr-2" />
-          {currentstore?.label}
+          <span className="text-muted-foreground">{title}</span>
           <ChevronsUpDownIcon className="ml-auto h-4 w-4 shrink-0 opacity-50" />
         </Button>
       </PopoverTrigger>

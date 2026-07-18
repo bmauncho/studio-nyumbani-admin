@@ -3,11 +3,11 @@ import { Modal } from "../ui/modal";
 import { Separator } from "../ui/separator";
 import { useEffect, useState } from "react";
 import { Badge } from "../ui/badge";
-import { BookingColumn } from "@/app/(dashboard)/[storeId]/(routes)/bookings/components/booking-column";
+import { BookingColumn } from "@/app/(dashboard)/(routes)/bookings/components/booking-column";
 import {
   BOOKING_STATUS_COLORS,
   getBookingStatus,
-} from "@/app/(dashboard)/[storeId]/(routes)/bookings/lib/booking-status";
+} from "@/app/(dashboard)/(routes)/bookings/lib/booking-status";
 import { Button } from "../ui/button";
 
 interface BookingsModalProps {

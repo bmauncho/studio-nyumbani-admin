@@ -1,5 +1,5 @@
 import { Archive, Trash2 } from "lucide-react";
-import { MessageColumn } from "./message-column";
+import { MessageColumn } from "../../../../(routes)/messages/components/message-column";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 
