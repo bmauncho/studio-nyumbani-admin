@@ -174,3 +174,157 @@ enum BookingStatus {
   CANCELLED
   COMPLETED
 }
+
+model Message {
+  id        String   @id @default(cuid())
+  name      String
+  email     String
+  message   String
+  read      Boolean  @default(false) 
+  archived  Boolean  @default(false) 
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+
+model CMSPage{
+  id          String          @id @default(cuid())
+  userId      String
+  name        String   
+  type        CMSType         @unique
+  hero        Hero?           @relation("CmsPageToHero")
+  contactUs   ContactUs?      @relation("CmsPageToContactUs")
+  ourServices  OurService[]   @relation("CmsPageToOurService")
+  ourWork      OurWork[]      @relation("CmsPageToOurWork")
+  testimonials Testimonial[]  @relation("CmsPageToTestimonials")
+
+  createdAt DateTime    @default(now())
+  updatedAt DateTime    @updatedAt
+}
+
+enum CMSType{
+  Hero
+  Contact_Us
+  Our_Services
+  Our_Works
+  Testimonials
+}
+
+model Hero{
+  id        String      @id @default(cuid())
+  cmsPageId String   @unique
+  cmsPage   CMSPage  @relation("CmsPageToHero", fields: [cmsPageId], references: [id])
+  title     String
+  subtitle  String?
+  image     String?
+  description String?
+  createdAt DateTime    @default(now())
+  updatedAt DateTime    @updatedAt
+  
+  @@index([cmsPageId])
+}
+
+model OurWork {
+  id          String   @id @default(cuid())
+  cmsPageId       String
+  cmsPage         CMSPage      @relation("CmsPageToOurWork",fields: [cmsPageId], references: [id])
+  title       String
+  works       Work[]
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@index([cmsPageId])
+}
+
+model Work{
+  id          String        @id @default(cuid())
+  ourWorkId   String
+  OurWork     OurWork       @relation(fields: [ourWorkId], references: [id])
+  title       String
+  category    String
+  description String?
+  image       String?
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
+
+  @@index([ourWorkId])
+}
+
+model OurService {
+  id            String      @id @default(cuid())
+  cmsPageId         String
+  cmsPage           CMSPage         @relation("CmsPageToOurService",fields: [cmsPageId], references: [id])
+  title         String
+  description   String?
+  services      Service[]  
+  createdAt     DateTime    @default(now())
+  updatedAt     DateTime    @updatedAt
+
+  @@index([cmsPageId])
+}
+
+model Service{
+  id            String        @id @default(cuid())
+  ourServiceId  String     
+  ourService    OurService    @relation(fields: [ourServiceId], references: [id])
+  title         String
+  description   String?
+  createdAt     DateTime      @default(now())
+  updatedAt     DateTime      @updatedAt
+
+  @@index([ourServiceId])
+}
+
+model ContactUs{
+  id        String   @id @default(cuid())
+  cmsPageId     String   @unique  // one-to-one with CMS
+  cmsPage       CMSPage      @relation("CmsPageToContactUs",fields: [cmsPageId], references: [id])
+  title     String
+  description String
+  email     String
+  phone     String
+  getInTouch GetInTouch? 
+  socails   SocialMedia[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([cmsPageId])
+}
+
+model GetInTouch{
+  id                String         @id @default(cuid())
+  contactUsId       String         @unique
+  contactUs         ContactUs      @relation(fields: [contactUsId], references: [id])
+  title             String
+  description       String
+  createdAt         DateTime       @default(now())
+  updatedAt         DateTime       @updatedAt
+
+  @@index([contactUsId])
+}
+
+model SocialMedia{
+  id          String   @id @default(cuid())
+  contactUsId       String
+  contactUs         ContactUs      @relation(fields: [contactUsId], references: [id])
+  platform    String
+  url         String
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@index([contactUsId])
+}
+
+model Testimonial {
+  id        String   @id @default(cuid())
+  cmsPageId     String   
+  cmsPage       CMSPage      @relation("CmsPageToTestimonials",fields: [cmsPageId], references: [id], onDelete: Cascade)
+  name      String
+  role      String?
+  content   String
+  image     String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([cmsPageId])
+}

@@ -74,7 +74,6 @@ export const SettingsForm = ({ initialData }: SettingsFormsProps) => {
       }, 500);
 
       toast.success("Store deleted.");
-      
     } catch (error) {
       toast.error("Make sure you remove all products and categories first.");
     } finally {
