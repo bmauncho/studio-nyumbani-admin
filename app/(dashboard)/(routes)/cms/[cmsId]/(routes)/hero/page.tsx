@@ -13,13 +13,20 @@ const HeroCMSPage = async ({
     where: {
       id: cmsId,
     },
+    include: {
+      hero: true,
+    },
   });
 
   const cmsType = Object.values(CMSType);
+
   return (
     <div className="flex-col">
       <div className="flex-1 space-y-4">
-        <HeroPageClient initialcmsForm={cmsPage} cmsType={cmsType} />
+        <HeroPageClient
+          initialcmsForm={cmsPage}
+          cmsType={cmsType}
+        />
       </div>
     </div>
   );

@@ -1,7 +1,7 @@
 import { Archive, Trash2 } from "lucide-react";
-import { MessageColumn } from "../../../../(routes)/messages/components/message-column";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
+import { MessageColumn } from "./message-column";
 
 interface MessageDetailProps {
   message: MessageColumn;

@@ -211,27 +211,26 @@ enum CMSType{
 }
 
 model Hero{
-  id        String      @id @default(cuid())
-  cmsPageId String   @unique
-  cmsPage   CMSPage  @relation("CmsPageToHero", fields: [cmsPageId], references: [id])
-  title     String
-  subtitle  String?
-  image     String?
-  description String?
-  createdAt DateTime    @default(now())
-  updatedAt DateTime    @updatedAt
+  id            String      @id @default(cuid())
+  cmsPageId     String      @unique
+  cmsPage       CMSPage     @relation("CmsPageToHero", fields: [cmsPageId], references: [id])
+  title         String
+  subtitle      String?
+  imageUrl      String?
+  createdAt     DateTime    @default(now())
+  updatedAt     DateTime    @updatedAt
   
   @@index([cmsPageId])
 }
 
 model OurWork {
-  id          String   @id @default(cuid())
+  id              String   @id @default(cuid())
   cmsPageId       String
   cmsPage         CMSPage      @relation("CmsPageToOurWork",fields: [cmsPageId], references: [id])
-  title       String
-  works       Work[]
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+  title           String
+  works           Work[]
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
 
   @@index([cmsPageId])
 }

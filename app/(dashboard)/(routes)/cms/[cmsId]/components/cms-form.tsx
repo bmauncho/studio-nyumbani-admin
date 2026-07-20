@@ -75,7 +75,7 @@ export const CmsForm = ({
 
       router.push(`/cms`);
 
-      toast.success("CMS page updated.");
+      toast.success(toastMessage);
     } catch (error) {
       toast.error("Something went wrong.");
     } finally {
@@ -97,7 +97,7 @@ export const CmsForm = ({
 
       toast.success("CMS page deleted.");
     } catch (error) {
-      toast.error("Make sure you remove all products and categories first.");
+      toast.error("Something went wrong.");
     } finally {
       setLoading(false);
     }
@@ -122,24 +122,20 @@ export const CmsForm = ({
         onConfirm={onDelete}
         loading={loading}
       />
-      {showHeader && (
-        <>
-          <div className="flex items-center justify-between">
-            <Heading title={title} description={desc} />
-            {initialData && (
-              <Button
-                disabled={loading}
-                variant="destructive"
-                size="sm"
-                onClick={() => setOpen(true)}
-              >
-                <Trash className="h-4 w-4" />
-              </Button>
-            )}
-          </div>
-          <Separator />
-        </>
-      )}
+      <div className="flex items-center justify-between">
+        <Heading title={title} description={desc} />
+        {initialData && (
+          <Button
+            disabled={loading}
+            variant="destructive"
+            size="sm"
+            onClick={() => setOpen(true)}
+          >
+            <Trash className="h-4 w-4" />
+          </Button>
+        )}
+      </div>
+      <Separator />
       <div>
         <form
           onSubmit={form.handleSubmit(onSubmit)}
@@ -200,9 +196,11 @@ export const CmsForm = ({
               />
             </FieldGroup>
           </div>
-          <Button disabled={loading} className="ml-auto" type="submit">
-            {submitAction}
-          </Button>
+          {showHeader && (
+            <Button disabled={loading} className="ml-auto" type="submit">
+              {submitAction}
+            </Button>
+          )}
         </form>
       </div>
     </>
