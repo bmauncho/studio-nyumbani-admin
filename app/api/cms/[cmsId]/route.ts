@@ -64,7 +64,18 @@ export async function DELETE(
       return new NextResponse(" Store ID is required ", { status: 400 });
     }
 
-    const cmsPage = await prismadb.cMSPage.deleteMany({
+    const cmsPage = await prismadb.cMSPage.findFirst({
+      where: {
+        id: cmsId,
+        userId,
+      },
+    });
+
+    if (!cmsPage) {
+      return new NextResponse("CMS page not found", { status: 404 });
+    }
+
+    await prismadb.cMSPage.delete({
       where: {
         id: cmsId,
         userId,

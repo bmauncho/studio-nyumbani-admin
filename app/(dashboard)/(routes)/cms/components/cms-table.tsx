@@ -28,7 +28,10 @@ export const CMSTable = ({ data }: CMsTableProps) => {
   };
 
   const onDelete = async () => {
-    if (!selectedId) return;
+    if (!selectedId) {
+      toast.error("Something went wrong.");
+      return;
+    }
     try {
       setLoading(true);
 
@@ -124,6 +127,7 @@ export const CMSTable = ({ data }: CMsTableProps) => {
                             size="sm"
                             onClick={() => {
                               setOpen(true);
+                              setSelectedId(CMS.id);
                             }}
                           >
                             <Trash className="w-4 h-4" />

@@ -1,27 +1,23 @@
 "use client";
+import { AlertModal } from "@/components/modals/alert-modal";
+import { Button } from "@/components/ui/button";
 import { Heading } from "@/components/ui/heading";
 import { Separator } from "@/components/ui/separator";
-import { CMSPage, CMSType, Hero } from "@prisma/client";
-import { CmsForm } from "@/app/(dashboard)/(routes)/cms/[cmsId]/components/cms-form";
-import { Button } from "@/components/ui/button";
-import { Trash } from "lucide-react";
-import { useState } from "react";
-import { HeroCMSForm } from "./hero-cms-form";
-import { AlertModal } from "@/components/modals/alert-modal";
 import axios from "axios";
+import { Trash } from "lucide-react";
 import { useRouter } from "next/navigation";
+import { useState } from "react";
 import toast from "react-hot-toast";
+import { CMSPage, OurWork } from "@prisma/client";
 
-interface HeroPageProps {
+interface OurWorksClientProps {
   initialcmsForm:
     | (CMSPage & {
-        hero: Hero | null;
+        ourWork: OurWork | null;
       })
     | null;
-  cmsType: CMSType[];
 }
-
-const HeroPageClient = ({ initialcmsForm, cmsType }: HeroPageProps) => {
+const OurWorksClient = ({ initialcmsForm }: OurWorksClientProps) => {
   const router = useRouter();
   const [open, setOpen] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -29,15 +25,6 @@ const HeroPageClient = ({ initialcmsForm, cmsType }: HeroPageProps) => {
   const onDelete = async () => {
     try {
       setLoading(true);
-
-      // if (initialcmsForm?.hero) {
-      //   // delete hero cms data
-      //   await axios.delete(
-      //     `/api/cms/${initialcmsForm?.id}/hero/${initialcmsForm?.hero?.id}`
-      //   );
-      // }
-      //delete cms page
-      await axios.delete(`/api/cms/${initialcmsForm?.id}`);
 
       router.refresh();
 
@@ -52,6 +39,7 @@ const HeroPageClient = ({ initialcmsForm, cmsType }: HeroPageProps) => {
       setLoading(false);
     }
   };
+
   return (
     <>
       <AlertModal
@@ -62,7 +50,10 @@ const HeroPageClient = ({ initialcmsForm, cmsType }: HeroPageProps) => {
       />
 
       <div className="flex items-center justify-between">
-        <Heading title="Hero CMS Page" description="Manage Hero section." />
+        <Heading
+          title="Portfolio CMS Page"
+          description="Manage Portfolio and or work(s) section."
+        />
         <Button
           disabled={loading}
           variant="destructive"
@@ -73,14 +64,8 @@ const HeroPageClient = ({ initialcmsForm, cmsType }: HeroPageProps) => {
         </Button>
       </div>
       <Separator />
-      {/* hero page form */}
-      <HeroCMSForm
-        cmsData={initialcmsForm}
-        cmsType={cmsType}
-        isDelete={loading}
-      />
     </>
   );
 };
 
-export default HeroPageClient;
+export default OurWorksClient;

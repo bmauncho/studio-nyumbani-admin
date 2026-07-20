@@ -195,7 +195,7 @@ model CMSPage{
   hero        Hero?           @relation("CmsPageToHero")
   contactUs   ContactUs?      @relation("CmsPageToContactUs")
   ourServices  OurService[]   @relation("CmsPageToOurService")
-  ourWork      OurWork[]      @relation("CmsPageToOurWork")
+  ourWork      OurWork?      @relation("CmsPageToOurWork")
   testimonials Testimonial[]  @relation("CmsPageToTestimonials")
 
   createdAt DateTime    @default(now())
@@ -213,7 +213,7 @@ enum CMSType{
 model Hero{
   id            String      @id @default(cuid())
   cmsPageId     String      @unique
-  cmsPage       CMSPage     @relation("CmsPageToHero", fields: [cmsPageId], references: [id])
+  cmsPage       CMSPage     @relation("CmsPageToHero", fields: [cmsPageId], references: [id],onDelete: Cascade)
   title         String
   subtitle      String?
   imageUrl      String?
@@ -224,9 +224,9 @@ model Hero{
 }
 
 model OurWork {
-  id              String   @id @default(cuid())
-  cmsPageId       String
-  cmsPage         CMSPage      @relation("CmsPageToOurWork",fields: [cmsPageId], references: [id])
+  id              String       @id @default(cuid())
+  cmsPageId       String       @unique
+  cmsPage         CMSPage      @relation("CmsPageToOurWork",fields: [cmsPageId], references: [id],onDelete: Cascade)
   title           String
   works           Work[]
   createdAt       DateTime @default(now())
@@ -242,7 +242,7 @@ model Work{
   title       String
   category    String
   description String?
-  image       String?
+  imageUrl    String?
   createdAt   DateTime      @default(now())
   updatedAt   DateTime      @updatedAt
 
@@ -252,7 +252,7 @@ model Work{
 model OurService {
   id            String      @id @default(cuid())
   cmsPageId         String
-  cmsPage           CMSPage         @relation("CmsPageToOurService",fields: [cmsPageId], references: [id])
+  cmsPage           CMSPage         @relation("CmsPageToOurService",fields: [cmsPageId], references: [id],onDelete: Cascade)
   title         String
   description   String?
   services      Service[]  
@@ -277,7 +277,7 @@ model Service{
 model ContactUs{
   id        String   @id @default(cuid())
   cmsPageId     String   @unique  // one-to-one with CMS
-  cmsPage       CMSPage      @relation("CmsPageToContactUs",fields: [cmsPageId], references: [id])
+  cmsPage       CMSPage      @relation("CmsPageToContactUs",fields: [cmsPageId], references: [id],onDelete: Cascade)
   title     String
   description String
   email     String
@@ -293,7 +293,7 @@ model ContactUs{
 model GetInTouch{
   id                String         @id @default(cuid())
   contactUsId       String         @unique
-  contactUs         ContactUs      @relation(fields: [contactUsId], references: [id])
+  contactUs         ContactUs      @relation(fields: [contactUsId], references: [id],onDelete: Cascade)
   title             String
   description       String
   createdAt         DateTime       @default(now())
@@ -305,7 +305,7 @@ model GetInTouch{
 model SocialMedia{
   id          String   @id @default(cuid())
   contactUsId       String
-  contactUs         ContactUs      @relation(fields: [contactUsId], references: [id])
+  contactUs         ContactUs      @relation(fields: [contactUsId], references: [id],onDelete: Cascade)
   platform    String
   url         String
   createdAt   DateTime @default(now())
