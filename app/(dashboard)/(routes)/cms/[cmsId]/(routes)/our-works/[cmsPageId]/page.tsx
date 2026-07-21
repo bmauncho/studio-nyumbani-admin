@@ -5,13 +5,13 @@ import prismadb from "@/lib/prismadb";
 const OurWorkDetailPage = async ({
   params,
 }: {
-  params: Params<{ ourWorkId: string }>;
+  params: Params<{ cmsPageId: string }>;
 }) => {
-  const { ourWorkId } = await params;
+  const { cmsPageId } = await params;
 
   const ourWork = await prismadb.ourWork.findUnique({
     where: {
-      id: ourWorkId,
+      id: cmsPageId,
     },
   });
 

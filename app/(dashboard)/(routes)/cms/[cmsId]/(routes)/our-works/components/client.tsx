@@ -10,11 +10,12 @@ import { useState } from "react";
 import toast from "react-hot-toast";
 import { CMSPage, CMSType, OurWork } from "@prisma/client";
 import { CMSpageForm } from "./cms-form";
+import WorksPage from "./works";
 
 interface OurWorksClientProps {
   initialcmsForm:
     | (CMSPage & {
-        ourWork: OurWork | null;
+        ourWork: OurWork[];
       })
     | null;
 }
@@ -69,6 +70,7 @@ const OurWorksClient = ({ initialcmsForm }: OurWorksClientProps) => {
       </div>
       <Separator />
       <CMSpageForm initialData={initialcmsForm} disable={loading} />
+      <WorksPage cmsId={initialcmsForm?.id || ""} />
     </>
   );
 };

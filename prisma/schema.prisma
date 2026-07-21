@@ -195,7 +195,7 @@ model CMSPage{
   hero        Hero?           @relation("CmsPageToHero")
   contactUs   ContactUs?      @relation("CmsPageToContactUs")
   ourServices  OurService[]   @relation("CmsPageToOurService")
-  ourWork      OurWork?      @relation("CmsPageToOurWork")
+  ourWork      OurWork[]      @relation("CmsPageToOurWork")
   testimonials Testimonial[]  @relation("CmsPageToTestimonials")
 
   createdAt DateTime    @default(now())
@@ -225,7 +225,7 @@ model Hero{
 
 model OurWork {
   id              String       @id @default(cuid())
-  cmsPageId       String       @unique
+  cmsPageId       String       
   cmsPage         CMSPage      @relation("CmsPageToOurWork",fields: [cmsPageId], references: [id],onDelete: Cascade)
   title           String
   works           Work[]
