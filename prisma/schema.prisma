@@ -188,16 +188,16 @@ model Message {
 
 
 model CMSPage{
-  id          String          @id @default(cuid())
+  id          String            @id @default(cuid())
   userId      String
   name        String   
-  type        CMSType         @unique
-  hero        Hero?           @relation("CmsPageToHero")
-  contactUs   ContactUs?      @relation("CmsPageToContactUs")
-  ourServices  OurService[]   @relation("CmsPageToOurService")
-  ourWork      OurWork[]      @relation("CmsPageToOurWork")
-  testimonials Testimonial[]  @relation("CmsPageToTestimonials")
-
+  type        CMSType           @unique
+  hero        Hero?             @relation("CmsPageToHero")
+  contactUs   ContactUs?        @relation("CmsPageToContactUs")
+  ourServices  OurService[]     @relation("CmsPageToOurService")
+  ourWork      OurWork[]        @relation("CmsPageToOurWork")
+  testimonials Testimonial[]    @relation("CmsPageToTestimonials")
+  workCategories WorkCategory[] @relation("CmsPageToWorkCategory")
   createdAt DateTime    @default(now())
   updatedAt DateTime    @updatedAt
 }
@@ -227,7 +227,9 @@ model OurWork {
   id              String       @id @default(cuid())
   cmsPageId       String       
   cmsPage         CMSPage      @relation("CmsPageToOurWork",fields: [cmsPageId], references: [id],onDelete: Cascade)
+  imageUrl        String
   title           String
+  subTitle        String
   works           Work[]
   createdAt       DateTime @default(now())
   updatedAt       DateTime @updatedAt
@@ -235,12 +237,23 @@ model OurWork {
   @@index([cmsPageId])
 }
 
+model WorkCategory{
+  id              String        @id @default(cuid())
+  cmsPageId     String      @unique
+  cmsPage       CMSPage     @relation("CmsPageToWorkCategory", fields: [cmsPageId], references: [id],onDelete: Cascade)
+  category        String
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  @@index([cmsPageId])
+
+}
+
 model Work{
   id          String        @id @default(cuid())
   ourWorkId   String
-  OurWork     OurWork       @relation(fields: [ourWorkId], references: [id])
+  OurWork     OurWork       @relation(fields: [ourWorkId], references: [id] ,onDelete:Cascade)
   title       String
-  category    String
   description String?
   images      WorkImage[]
   createdAt   DateTime      @default(now())
