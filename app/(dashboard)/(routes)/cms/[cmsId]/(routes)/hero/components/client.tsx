@@ -2,7 +2,6 @@
 import { Heading } from "@/components/ui/heading";
 import { Separator } from "@/components/ui/separator";
 import { CMSPage, CMSType, Hero } from "@prisma/client";
-import { CmsForm } from "@/app/(dashboard)/(routes)/cms/[cmsId]/components/cms-form";
 import { Button } from "@/components/ui/button";
 import { Trash } from "lucide-react";
 import { useState } from "react";
@@ -42,7 +41,7 @@ const HeroPageClient = ({ initialcmsForm, cmsType }: HeroPageProps) => {
       router.refresh();
 
       setTimeout(() => {
-        window.location.assign("/");
+        window.location.assign("/cms");
       }, 500);
 
       toast.success("CMS page deleted.");

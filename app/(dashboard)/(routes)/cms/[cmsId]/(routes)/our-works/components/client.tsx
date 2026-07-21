@@ -8,7 +8,8 @@ import { Trash } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import toast from "react-hot-toast";
-import { CMSPage, OurWork } from "@prisma/client";
+import { CMSPage, CMSType, OurWork } from "@prisma/client";
+import { CMSpageForm } from "./cms-form";
 
 interface OurWorksClientProps {
   initialcmsForm:
@@ -17,6 +18,7 @@ interface OurWorksClientProps {
       })
     | null;
 }
+
 const OurWorksClient = ({ initialcmsForm }: OurWorksClientProps) => {
   const router = useRouter();
   const [open, setOpen] = useState(false);
@@ -26,10 +28,12 @@ const OurWorksClient = ({ initialcmsForm }: OurWorksClientProps) => {
     try {
       setLoading(true);
 
+      await axios.delete(`/api/cms/${initialcmsForm?.id}`);
+
       router.refresh();
 
       setTimeout(() => {
-        window.location.assign("/");
+        window.location.assign("/cms");
       }, 500);
 
       toast.success("CMS page deleted.");
@@ -52,7 +56,7 @@ const OurWorksClient = ({ initialcmsForm }: OurWorksClientProps) => {
       <div className="flex items-center justify-between">
         <Heading
           title="Portfolio CMS Page"
-          description="Manage Portfolio and or work(s) section."
+          description="Manage Portfolio and or our-work(s) section."
         />
         <Button
           disabled={loading}
@@ -64,6 +68,7 @@ const OurWorksClient = ({ initialcmsForm }: OurWorksClientProps) => {
         </Button>
       </div>
       <Separator />
+      <CMSpageForm initialData={initialcmsForm} disable={loading} />
     </>
   );
 };

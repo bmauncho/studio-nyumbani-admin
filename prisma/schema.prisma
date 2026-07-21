@@ -242,11 +242,22 @@ model Work{
   title       String
   category    String
   description String?
-  imageUrl    String?
+  images      WorkImage[]
   createdAt   DateTime      @default(now())
   updatedAt   DateTime      @updatedAt
 
   @@index([ourWorkId])
+}
+
+model WorkImage{
+  id          String        @id @default(cuid()) 
+  workId      String
+  Work        Work          @relation(fields: [workId], references: [id])
+  url       String
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
+
+  @@index([workId])
 }
 
 model OurService {
