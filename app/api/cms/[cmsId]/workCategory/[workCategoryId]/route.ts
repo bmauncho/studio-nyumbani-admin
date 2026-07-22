@@ -4,47 +4,47 @@ import prismadb from "@/lib/prismadb";
 
 export async function GET(
   req: Request,
-  { params }: { params: Promise<{ cmsPageId: string; ourWorkId: string }> }
+  { params }: { params: Promise<{ cmsPageId: string; workCategoryId: string }> }
 ) {
   try {
-    const { ourWorkId } = await params;
+    const { workCategoryId } = await params;
 
-    if (!ourWorkId) {
-      return new NextResponse(" ourWorkId ID is required", { status: 400 });
+    if (!workCategoryId) {
+      return new NextResponse(" Work Category Id is required", { status: 400 });
     }
 
-    const ourWorkcms = await prismadb.ourWork.findUnique({
+    const workCategory = await prismadb.workCategory.findUnique({
       where: {
-        id: ourWorkId,
+        id: workCategoryId,
       },
     });
 
-    return NextResponse.json(ourWorkcms);
+    return NextResponse.json(workCategory);
   } catch (error) {
-    console.log("[OURWORK_CMS_GET]", error);
+    console.log("[WORKCATEGORY_CMS_GET]", error);
     return new NextResponse("Internal error", { status: 500 });
   }
 }
 
 export async function PATCH(
   req: Request,
-  { params }: { params: Promise<{ cmsPageId: string; ourWorkId: string }> }
+  { params }: { params: Promise<{ cmsPageId: string; workCategoryId: string }> }
 ) {
   try {
     const { userId } = await auth();
     const body = await req.json();
-    const { cmsPageId, ourWorkId } = await params;
-    const { title, subTitle, imageUrl } = body;
+    const { cmsPageId, workCategoryId } = await params;
+    const { category } = body;
 
     if (!userId) {
       return new NextResponse("Unauthenticated", { status: 401 });
     }
 
-    if (!title) {
-      return new NextResponse("Title is required", { status: 400 });
+    if (!category) {
+      return new NextResponse("Category is required", { status: 400 });
     }
 
-    const cmsPageBycmsId = await prismadb.cMSPage.findUnique({
+    const cmsPageBycmsId = await prismadb.cMSPage.findFirst({
       where: {
         id: cmsPageId,
       },
@@ -54,45 +54,54 @@ export async function PATCH(
       return new NextResponse("CMS Page not found", { status: 404 });
     }
 
-    if (!ourWorkId) {
-      return new NextResponse("Our Work ID is required", { status: 400 });
+    if (!workCategoryId) {
+      return new NextResponse("Work Category ID is required", { status: 400 });
     }
 
-    const ourWork = await prismadb.ourWork.updateMany({
+    console.log({
+      cmsPageId,
+      workCategoryId,
+      category,
+    });
+
+    const workCategory = await prismadb.workCategory.updateMany({
       where: {
-        id: ourWorkId,
+        id: workCategoryId,
       },
       data: {
-        title,
-        subTitle,
-        imageUrl,
+        category: category,
       },
     });
 
-    return NextResponse.json(ourWork);
+    return NextResponse.json(workCategory);
   } catch (error) {
-    console.log("[OURWORK_CMS_PATCH]", error);
+    console.log("[WORKCATEGORY_CMS_PATCH]", error);
+
+    if (error instanceof Error) {
+      return new NextResponse(error.message, { status: 500 });
+    }
+
     return new NextResponse("Internal error", { status: 500 });
   }
 }
 
 export async function DELETE(
   req: Request,
-  { params }: { params: Promise<{ cmsPageId: string; ourWorkId: string }> }
+  { params }: { params: Promise<{ cmsPageId: string; workCategoryId: string }> }
 ) {
   try {
     const { userId } = await auth();
-    const { cmsPageId, ourWorkId } = await params;
+    const { cmsPageId, workCategoryId } = await params;
 
     if (!userId) {
       return new NextResponse("Unauthenticated", { status: 401 });
     }
 
-    if (!ourWorkId) {
-      return new NextResponse("Our Work ID is required", { status: 400 });
+    if (!workCategoryId) {
+      return new NextResponse("Work Category ID is required", { status: 400 });
     }
 
-    const cmsPageBycmsId = await prismadb.cMSPage.findUnique({
+    const cmsPageBycmsId = await prismadb.cMSPage.findFirst({
       where: {
         id: cmsPageId,
       },
@@ -102,15 +111,15 @@ export async function DELETE(
       return new NextResponse("CMS Page not found", { status: 404 });
     }
 
-    const ourWork = await prismadb.ourWork.deleteMany({
+    const workCategory = await prismadb.workCategory.deleteMany({
       where: {
-        id: ourWorkId,
+        id: workCategoryId,
       },
     });
 
-    return NextResponse.json(ourWork);
+    return NextResponse.json(workCategory);
   } catch (error) {
-    console.log("[OURWORK_DELETE]", error);
+    console.log("[WORK_CATEGORY_DELETE]", error);
     return new NextResponse("Internal error", { status: 500 });
   }
 }

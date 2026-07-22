@@ -8,7 +8,7 @@ import { Trash } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import toast from "react-hot-toast";
-import { CMSPage, CMSType, OurWork } from "@prisma/client";
+import { CMSPage, CMSType, OurWork, WorkCategory } from "@prisma/client";
 import { CMSpageForm } from "./cms-form";
 import WorksPage from "./works";
 import WorksCatagories from "./works-catagories";
@@ -17,6 +17,7 @@ interface OurWorksClientProps {
   initialcmsForm:
     | (CMSPage & {
         ourWork: OurWork[];
+        workCategories: WorkCategory[];
       })
     | null;
 }
@@ -71,7 +72,10 @@ const OurWorksClient = ({ initialcmsForm }: OurWorksClientProps) => {
       </div>
       <Separator />
       <CMSpageForm initialData={initialcmsForm} disable={loading} />
-      {/* <WorksCatagories /> */}
+      <WorksCatagories
+        cmsId={initialcmsForm?.id || ""}
+        workCategories={initialcmsForm?.workCategories ?? []}
+      />
       <WorksPage cmsId={initialcmsForm?.id || ""} />
     </>
   );

@@ -92,7 +92,7 @@ export async function DELETE(
       return new NextResponse("Hero ID is required", { status: 400 });
     }
 
-    const cmsPageBycmsId = await prismadb.cMSPage.findUnique({
+    const cmsPageBycmsId = await prismadb.cMSPage.findFirst({
       where: {
         id: cmsPageId,
       },

@@ -239,11 +239,11 @@ model OurWork {
 
 model WorkCategory{
   id              String        @id @default(cuid())
-  cmsPageId     String      @unique
-  cmsPage       CMSPage     @relation("CmsPageToWorkCategory", fields: [cmsPageId], references: [id],onDelete: Cascade)
+  cmsPageId       String      
+  cmsPage         CMSPage       @relation("CmsPageToWorkCategory", fields: [cmsPageId], references: [id],onDelete: Cascade)
   category        String
-  createdAt       DateTime @default(now())
-  updatedAt       DateTime @updatedAt
+  createdAt       DateTime      @default(now())
+  updatedAt       DateTime      @updatedAt
 
   @@index([cmsPageId])
 
