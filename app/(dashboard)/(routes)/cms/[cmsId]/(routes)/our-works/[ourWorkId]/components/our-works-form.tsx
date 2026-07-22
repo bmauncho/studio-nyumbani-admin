@@ -1,4 +1,5 @@
 "use client";
+import { AlertModal } from "@/components/modals/alert-modal";
 import { Button } from "@/components/ui/button";
 import {
   Field,
@@ -9,30 +10,50 @@ import {
 import { Heading } from "@/components/ui/heading";
 import ImageUpload from "@/components/ui/image-upload";
 import { Input } from "@/components/ui/input";
-import { InputGroup, InputGroupTextarea } from "@/components/ui/input-group";
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { Separator } from "@/components/ui/separator";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { OurWork } from "@prisma/client";
+import { OurWork, WorkCategory } from "@prisma/client";
+import axios from "axios";
 import { Trash } from "lucide-react";
 import { useState } from "react";
 import { Controller, useForm } from "react-hook-form";
+import toast from "react-hot-toast";
 import * as z from "zod";
+import { useRouter } from "next/navigation";
 
 interface OurWorksFormProps {
   initialData: OurWork | null;
+  workCategories: WorkCategory[];
+  cmsId: string;
 }
 
 const formSchema = z.object({
   title: z.string().min(1),
   subTitle: z.string().min(1),
   imageUrl: z.string().min(1),
+  workCategoryId: z.string().min(1),
 });
 
 type OurWorkFormValues = z.infer<typeof formSchema>;
 
-export const OurWorkForm = ({ initialData }: OurWorksFormProps) => {
+export const OurWorkForm = ({
+  initialData,
+  workCategories,
+  cmsId,
+}: OurWorksFormProps) => {
+  const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
+
+  const action = initialData ? "Save changes" : "Create";
 
   const form = useForm<OurWorkFormValues>({
     resolver: zodResolver(formSchema),
@@ -40,10 +61,60 @@ export const OurWorkForm = ({ initialData }: OurWorksFormProps) => {
       title: initialData?.title ?? "",
       subTitle: initialData?.subTitle ?? "",
       imageUrl: initialData?.imageUrl ?? "",
+      workCategoryId: initialData?.id ?? "",
     },
   });
+
+  const onDelete = async () => {
+    try {
+      setIsLoading(true);
+
+      await axios.delete(`/api/cms/${cmsId}/ourWork/${initialData?.id}`);
+
+      router.push(`/cms/${cmsId}/our-works`);
+
+      router.refresh();
+
+      toast.success("Work deleted.");
+    } catch (error) {
+      toast.error("Something went wrong.");
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const onSubmit = async (values: OurWorkFormValues) => {
+    setIsLoading(true);
+    try {
+      if (initialData) {
+        await axios.patch(
+          `/api/cms/${cmsId}/ourWork/${initialData?.id}`,
+          values
+        );
+      } else {
+        await axios.post(`/api/cms/${cmsId}/ourWork`, values);
+      }
+
+      router.push(`/cms/${cmsId}/our-works`);
+
+      router.refresh();
+
+      toast.success("Work Created.");
+    } catch (error) {
+      toast.error("Something went wrong.");
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
   return (
     <>
+      <AlertModal
+        isOpen={isOpen}
+        onClose={() => setIsOpen(false)}
+        onConfirm={onDelete}
+        loading={isLoading}
+      />
       <div className=" flex items-center justify-between">
         <Heading title="Our Works" description="Manage our works" />
         <Button
@@ -57,7 +128,7 @@ export const OurWorkForm = ({ initialData }: OurWorksFormProps) => {
       </div>
       <Separator />
       <div>
-        <form onSubmit={form.handleSubmit(() => {})}>
+        <form onSubmit={form.handleSubmit(onSubmit)}>
           <FieldGroup>
             <Controller
               name="imageUrl"
@@ -99,19 +170,51 @@ export const OurWorkForm = ({ initialData }: OurWorksFormProps) => {
                 )}
               />
               <Controller
+                name="workCategoryId"
+                control={form.control}
+                render={({ field, fieldState }) => (
+                  <Field>
+                    <FieldLabel>Work Category</FieldLabel>
+                    <Select
+                      disabled={isLoading}
+                      onValueChange={field.onChange}
+                      value={field.value}
+                      defaultValue={field.value}
+                    >
+                      <SelectTrigger>
+                        <SelectValue
+                          defaultValue={field.value}
+                          placeholder="Select work Category"
+                        />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectGroup>
+                          {workCategories.map((category) => (
+                            <SelectItem key={category.id} value={category.id}>
+                              {category.category}
+                            </SelectItem>
+                          ))}
+                        </SelectGroup>
+                      </SelectContent>
+                    </Select>
+                    {fieldState.invalid && (
+                      <FieldError errors={[fieldState.error]} />
+                    )}
+                  </Field>
+                )}
+              />
+              <Controller
                 name="subTitle"
                 control={form.control}
                 render={({ field, fieldState }) => (
                   <div className="bg-card rounded-lg border-border">
                     <Field>
                       <FieldLabel>Work Subtitle</FieldLabel>
-                      <InputGroup>
-                        <InputGroupTextarea
-                          {...field}
-                          placeholder="Work subtitle"
-                          disabled={isLoading}
-                        />
-                      </InputGroup>
+                      <Input
+                        {...field}
+                        placeholder="Work subtitle"
+                        disabled={isLoading}
+                      />
                       {fieldState.error && (
                         <FieldError>{fieldState.error.message}</FieldError>
                       )}
@@ -119,6 +222,11 @@ export const OurWorkForm = ({ initialData }: OurWorksFormProps) => {
                   </div>
                 )}
               />
+            </div>
+            <div className="pt-4">
+              <Button disabled={isLoading} className="ml-auto" type="submit">
+                {action}
+              </Button>
             </div>
           </FieldGroup>
         </form>

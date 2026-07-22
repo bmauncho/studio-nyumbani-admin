@@ -5,20 +5,31 @@ import prismadb from "@/lib/prismadb";
 const OurWorkDetailPage = async ({
   params,
 }: {
-  params: Params<{ cmsPageId: string }>;
+  params: Params<{ ourWorkId: string; cmsId: string }>;
 }) => {
-  const { cmsPageId } = await params;
+  const { ourWorkId, cmsId } = await params;
 
   const ourWork = await prismadb.ourWork.findUnique({
     where: {
-      id: cmsPageId,
+      id: ourWorkId,
+      cmsPageId: cmsId,
+    },
+  });
+
+  const categories = await prismadb.workCategory.findMany({
+    where: {
+      cmsPageId: cmsId,
     },
   });
 
   return (
     <div className="flex-col">
       <div className="flex-1 space-y-4">
-        <OurWorkForm initialData={ourWork} />
+        <OurWorkForm
+          initialData={ourWork}
+          workCategories={categories}
+          cmsId={cmsId as string}
+        />
       </div>
     </div>
   );

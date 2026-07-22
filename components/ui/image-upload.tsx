@@ -69,24 +69,18 @@ const ImageUpload = ({
           </div>
         ))}
       </div>
-      <CldUploadWidget onSuccess={onUpload} uploadPreset="studio-nyumbani">
-        {({ open }) => {
-          const onClick = () => {
-            if (!open) return; // 👈 guard against undefined
-            open();
-          };
-          return (
-            <Button
-              type="button"
-              disabled={disabled}
-              variant="secondary"
-              onClick={onClick}
-            >
-              <ImagePlus className="h-4 w-4 mr-2" />
-              Upload an image
-            </Button>
-          );
-        }}
+      <CldUploadWidget uploadPreset="studio-nyumbani" onSuccess={onUpload}>
+        {({ open }) => (
+          <Button
+            type="button"
+            disabled={disabled}
+            variant="secondary"
+            onClick={() => open?.()}
+          >
+            <ImagePlus className="h-4 w-4 mr-2" />
+            Upload an image
+          </Button>
+        )}
       </CldUploadWidget>
     </div>
   );

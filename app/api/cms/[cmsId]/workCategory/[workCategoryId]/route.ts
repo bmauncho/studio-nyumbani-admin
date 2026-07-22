@@ -58,12 +58,6 @@ export async function PATCH(
       return new NextResponse("Work Category ID is required", { status: 400 });
     }
 
-    console.log({
-      cmsPageId,
-      workCategoryId,
-      category,
-    });
-
     const workCategory = await prismadb.workCategory.updateMany({
       where: {
         id: workCategoryId,

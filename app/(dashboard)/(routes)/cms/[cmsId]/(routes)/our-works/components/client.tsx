@@ -12,6 +12,7 @@ import { CMSPage, CMSType, OurWork, WorkCategory } from "@prisma/client";
 import { CMSpageForm } from "./cms-form";
 import WorksPage from "./works";
 import WorksCatagories from "./works-catagories";
+import { WorksColumn } from "./works-column";
 
 interface OurWorksClientProps {
   initialcmsForm:
@@ -20,9 +21,17 @@ interface OurWorksClientProps {
         workCategories: WorkCategory[];
       })
     | null;
+  ourWorks: WorksColumn[];
+  currentPage: number;
+  totalPages: number;
 }
 
-const OurWorksClient = ({ initialcmsForm }: OurWorksClientProps) => {
+const OurWorksClient = ({
+  initialcmsForm,
+  ourWorks,
+  currentPage,
+  totalPages,
+}: OurWorksClientProps) => {
   const router = useRouter();
   const [open, setOpen] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -76,7 +85,12 @@ const OurWorksClient = ({ initialcmsForm }: OurWorksClientProps) => {
         cmsId={initialcmsForm?.id || ""}
         workCategories={initialcmsForm?.workCategories ?? []}
       />
-      <WorksPage cmsId={initialcmsForm?.id || ""} />
+      <WorksPage
+        cmsId={initialcmsForm?.id || ""}
+        ourWorks={ourWorks}
+        currentPage={currentPage}
+        totalPages={totalPages}
+      />
     </>
   );
 };

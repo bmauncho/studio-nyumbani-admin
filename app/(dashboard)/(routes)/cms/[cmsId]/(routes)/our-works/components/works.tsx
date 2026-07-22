@@ -3,17 +3,29 @@ import { Separator } from "@/components/ui/separator";
 import { SubHeading } from "@/components/ui/sub-heading";
 import { Plus } from "lucide-react";
 import { useRouter } from "next/navigation";
+import { WorksColumn } from "./works-column";
+import WorksCard from "./works-card";
+import PaginationControls from "@/components/ui/pagination-controls";
 
 interface WorksPageProps {
   cmsId: string | "";
+  ourWorks: WorksColumn[];
+  currentPage: number;
+  totalPages: number;
 }
 
-const WorksPage = ({ cmsId }: WorksPageProps) => {
+const WorksPage = ({
+  cmsId,
+  ourWorks,
+  currentPage,
+  totalPages,
+}: WorksPageProps) => {
   const router = useRouter();
   const onAddWorks = () => {
     router.push(`/cms/${cmsId}/our-works/new`);
-    console.log(`/cms/${cmsId}/our-works/new`);
   };
+  const path = `/cms/${cmsId}/our-works`;
+
   return (
     <>
       <div className="flex items-center justify-between pt-4">
@@ -27,6 +39,20 @@ const WorksPage = ({ cmsId }: WorksPageProps) => {
         </Button>
       </div>
       <Separator />
+      <div>
+        <div className="pt-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+            {ourWorks.map((work) => (
+              <WorksCard key={work.id} work={work} cmsId={cmsId as string} />
+            ))}
+          </div>
+        </div>
+        <PaginationControls
+          totalPages={totalPages}
+          currentPage={currentPage}
+          path={path}
+        />
+      </div>
     </>
   );
 };

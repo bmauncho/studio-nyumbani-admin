@@ -10,7 +10,7 @@ export async function POST(
     const { userId } = await auth();
     const body = await req.json();
     const { cmsId } = await params;
-    const { title, subtitle, imageUrl } = body;
+    const { title, subTitle, imageUrl, workCategoryId } = body;
 
     if (!userId) {
       return new NextResponse("Unauthenticated", { status: 401 });
@@ -20,8 +20,8 @@ export async function POST(
       return new NextResponse("Title is required", { status: 400 });
     }
 
-    if (!subtitle) {
-      return new NextResponse("Subtitle is required", { status: 400 });
+    if (!subTitle) {
+      return new NextResponse("SubTitle is required", { status: 400 });
     }
 
     if (!imageUrl) {
@@ -32,7 +32,11 @@ export async function POST(
       return new NextResponse("CMS ID is required", { status: 400 });
     }
 
-    const cmsPageBycmsId = await prismadb.cMSPage.findUnique({
+    if (!workCategoryId) {
+      return new NextResponse("Work Category Id is required", { status: 400 });
+    }
+
+    const cmsPageBycmsId = await prismadb.cMSPage.findFirst({
       where: {
         id: cmsId,
       },
@@ -44,10 +48,11 @@ export async function POST(
 
     const ourWorkcms = await prismadb.ourWork.create({
       data: {
-        cmsPageId: cmsId,
         title,
-        subTitle: subtitle,
-        imageUrl: imageUrl,
+        subTitle,
+        imageUrl,
+        cmsPageId: cmsId,
+        workCategoryId: workCategoryId,
       },
     });
 
