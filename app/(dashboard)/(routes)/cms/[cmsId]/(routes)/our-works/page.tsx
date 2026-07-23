@@ -23,6 +23,7 @@ const OurWorksPage = async ({
     include: {
       ourWork: true,
       workCategories: true,
+      ourWorkInfo: true,
     },
   });
 

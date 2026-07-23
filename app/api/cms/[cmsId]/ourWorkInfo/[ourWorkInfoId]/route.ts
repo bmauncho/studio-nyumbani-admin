@@ -4,44 +4,44 @@ import prismadb from "@/lib/prismadb";
 
 export async function GET(
   req: Request,
-  { params }: { params: Promise<{ cmsPageId: string; workCategoryId: string }> }
+  { params }: { params: Promise<{ cmsPageId: string; ourWorkInfoId: string }> }
 ) {
   try {
-    const { workCategoryId } = await params;
+    const { ourWorkInfoId } = await params;
 
-    if (!workCategoryId) {
-      return new NextResponse(" Work Category Id is required", { status: 400 });
+    if (!ourWorkInfoId) {
+      return new NextResponse(" Our Work Info Id is required", { status: 400 });
     }
 
-    const workCategory = await prismadb.workCategory.findUnique({
+    const ourWorkInfo = await prismadb.ourWorkInfo.findUnique({
       where: {
-        id: workCategoryId,
+        id: ourWorkInfoId,
       },
     });
 
-    return NextResponse.json(workCategory);
+    return NextResponse.json(ourWorkInfo);
   } catch (error) {
-    console.log("[WORK_CATEGORY_CMS_GET]", error);
+    console.log("[OUR_WORK_INFO_CMSGET]", error);
     return new NextResponse("Internal error", { status: 500 });
   }
 }
 
 export async function PATCH(
   req: Request,
-  { params }: { params: Promise<{ cmsPageId: string; workCategoryId: string }> }
+  { params }: { params: Promise<{ cmsPageId: string; ourWorkInfoId: string }> }
 ) {
   try {
     const { userId } = await auth();
     const body = await req.json();
-    const { cmsPageId, workCategoryId } = await params;
-    const { category } = body;
+    const { cmsPageId, ourWorkInfoId } = await params;
+    const { title, subtitle } = body;
 
     if (!userId) {
       return new NextResponse("Unauthenticated", { status: 401 });
     }
 
-    if (!category) {
-      return new NextResponse("Category is required", { status: 400 });
+    if (!title) {
+      return new NextResponse("title is required", { status: 400 });
     }
 
     const cmsPageBycmsId = await prismadb.cMSPage.findFirst({
@@ -54,22 +54,23 @@ export async function PATCH(
       return new NextResponse("CMS Page not found", { status: 404 });
     }
 
-    if (!workCategoryId) {
+    if (!ourWorkInfoId) {
       return new NextResponse("Work Category ID is required", { status: 400 });
     }
 
-    const workCategory = await prismadb.workCategory.updateMany({
+    const ourWorkInfo = await prismadb.ourWorkInfo.updateMany({
       where: {
-        id: workCategoryId,
+        id: ourWorkInfoId,
       },
       data: {
-        category: category,
+        title,
+        subtitle,
       },
     });
 
-    return NextResponse.json(workCategory);
+    return NextResponse.json(ourWorkInfo);
   } catch (error) {
-    console.log("[WORK_CATEGORY_CMS_PATCH]", error);
+    console.log("[OUR_WORK_INFO_CMS_PATCH]", error);
 
     if (error instanceof Error) {
       return new NextResponse(error.message, { status: 500 });
@@ -81,18 +82,18 @@ export async function PATCH(
 
 export async function DELETE(
   req: Request,
-  { params }: { params: Promise<{ cmsPageId: string; workCategoryId: string }> }
+  { params }: { params: Promise<{ cmsPageId: string; ourWorkInfoId: string }> }
 ) {
   try {
     const { userId } = await auth();
-    const { cmsPageId, workCategoryId } = await params;
+    const { cmsPageId, ourWorkInfoId } = await params;
 
     if (!userId) {
       return new NextResponse("Unauthenticated", { status: 401 });
     }
 
-    if (!workCategoryId) {
-      return new NextResponse("Work Category ID is required", { status: 400 });
+    if (!ourWorkInfoId) {
+      return new NextResponse("Our Work Info Id is required", { status: 400 });
     }
 
     const cmsPageBycmsId = await prismadb.cMSPage.findFirst({
@@ -105,15 +106,15 @@ export async function DELETE(
       return new NextResponse("CMS Page not found", { status: 404 });
     }
 
-    const workCategory = await prismadb.workCategory.deleteMany({
+    const ourWorkInfo = await prismadb.ourWorkInfo.deleteMany({
       where: {
-        id: workCategoryId,
+        id: ourWorkInfoId,
       },
     });
 
-    return NextResponse.json(workCategory);
+    return NextResponse.json(ourWorkInfo);
   } catch (error) {
-    console.log("[WORK_CATEGORY_DELETE]", error);
+    console.log("[OUR_WORK_INFO_CMS_DELETE]", error);
     return new NextResponse("Internal error", { status: 500 });
   }
 }

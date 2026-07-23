@@ -195,6 +195,7 @@ model CMSPage{
   hero        Hero?             @relation("CmsPageToHero")
   contactUs   ContactUs?        @relation("CmsPageToContactUs")
   ourServices  OurService[]     @relation("CmsPageToOurService")
+  ourWorkInfo  OurWorkInfo?     @relation("CmsPageToOurWorkInfo")
   ourWork      OurWork[]        @relation("CmsPageToOurWork")
   testimonials Testimonial[]    @relation("CmsPageToTestimonials")
   workCategories WorkCategory[] @relation("CmsPageToWorkCategory")
@@ -219,6 +220,18 @@ model Hero{
   imageUrl      String?
   createdAt     DateTime    @default(now())
   updatedAt     DateTime    @updatedAt
+  
+  @@index([cmsPageId])
+}
+
+model OurWorkInfo {
+  id        String   @id @default(cuid())
+  cmsPageId String   @unique
+  cmsPage   CMSPage  @relation("CmsPageToOurWorkInfo", fields: [cmsPageId], references: [id], onDelete: Cascade)
+  title     String
+  subtitle  String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
   
   @@index([cmsPageId])
 }

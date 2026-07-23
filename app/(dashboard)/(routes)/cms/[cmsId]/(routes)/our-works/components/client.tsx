@@ -8,17 +8,25 @@ import { Trash } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import toast from "react-hot-toast";
-import { CMSPage, CMSType, OurWork, WorkCategory } from "@prisma/client";
+import {
+  CMSPage,
+  CMSType,
+  OurWork,
+  OurWorkInfo,
+  WorkCategory,
+} from "@prisma/client";
 import { CMSpageForm } from "./cms-form";
 import WorksPage from "./works";
 import WorksCatagories from "./works-catagories";
 import { WorksColumn } from "./works-column";
+import CMSInfoPage from "./cms-info-page";
 
 interface OurWorksClientProps {
   initialcmsForm:
     | (CMSPage & {
         ourWork: OurWork[];
         workCategories: WorkCategory[];
+        ourWorkInfo: OurWorkInfo | null;
       })
     | null;
   ourWorks: WorksColumn[];
@@ -56,6 +64,14 @@ const OurWorksClient = ({
     }
   };
 
+  const onSubmitPageInfo = () => {
+    setLoading(true);
+  };
+
+  const onRefreshPageInfo = () => {
+    setLoading(false);
+  };
+
   return (
     <>
       <AlertModal
@@ -81,6 +97,13 @@ const OurWorksClient = ({
       </div>
       <Separator />
       <CMSpageForm initialData={initialcmsForm} disable={loading} />
+      <CMSInfoPage
+        cmsId={initialcmsForm?.id || ""}
+        ourWorkInfo={initialcmsForm?.ourWorkInfo ?? null}
+        isLoading={loading}
+        onConfirm={onSubmitPageInfo}
+        onRefresh={onRefreshPageInfo}
+      />
       <WorksCatagories
         cmsId={initialcmsForm?.id || ""}
         workCategories={initialcmsForm?.workCategories ?? []}
