@@ -194,6 +194,7 @@ model CMSPage{
   type        CMSType           @unique
   hero        Hero?             @relation("CmsPageToHero")
   contactUs   ContactUs?        @relation("CmsPageToContactUs")
+  ourServiceInfo OurServiceInfo? @relation("CmsPageToOurServiceInfo")
   ourServices  OurService[]     @relation("CmsPageToOurService")
   ourWorkInfo  OurWorkInfo?     @relation("CmsPageToOurWorkInfo")
   ourWork      OurWork[]        @relation("CmsPageToOurWork")
@@ -296,23 +297,22 @@ model OurService {
   cmsPage           CMSPage         @relation("CmsPageToOurService",fields: [cmsPageId], references: [id],onDelete: Cascade)
   title         String
   description   String?
-  services      Service[]  
   createdAt     DateTime    @default(now())
   updatedAt     DateTime    @updatedAt
 
   @@index([cmsPageId])
 }
 
-model Service{
-  id            String        @id @default(cuid())
-  ourServiceId  String     
-  ourService    OurService    @relation(fields: [ourServiceId], references: [id])
-  title         String
-  description   String?
-  createdAt     DateTime      @default(now())
-  updatedAt     DateTime      @updatedAt
+model OurServiceInfo{
+  id                String          @id @default(cuid())
+  cmsPageId         String          @unique
+  cmsPage           CMSPage         @relation("CmsPageToOurServiceInfo",fields: [cmsPageId], references: [id],onDelete: Cascade)
+  title             String
+  subtitle          String?
+  createdAt         DateTime        @default(now())
+  updatedAt         DateTime        @updatedAt
 
-  @@index([ourServiceId])
+  @@index([cmsPageId])
 }
 
 model ContactUs{

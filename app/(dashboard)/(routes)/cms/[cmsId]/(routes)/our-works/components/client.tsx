@@ -20,6 +20,7 @@ import WorksPage from "./works";
 import WorksCatagories from "./works-catagories";
 import { WorksColumn } from "./works-column";
 import CMSInfoPage from "./cms-info-page";
+import { CMSForm } from "@/components/ui/cms-form";
 
 interface OurWorksClientProps {
   initialcmsForm:
@@ -96,7 +97,13 @@ const OurWorksClient = ({
         </Button>
       </div>
       <Separator />
-      <CMSpageForm initialData={initialcmsForm} disable={loading} />
+      <CMSForm
+        cmsId={initialcmsForm?.id || ""}
+        initialData={initialcmsForm}
+        isLoading={loading}
+        onConfirm={() => {}}
+        onRefresh={() => {}}
+      />
       <CMSInfoPage
         cmsId={initialcmsForm?.id || ""}
         ourWorkInfo={initialcmsForm?.ourWorkInfo ?? null}

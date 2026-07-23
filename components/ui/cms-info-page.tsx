@@ -1,24 +1,25 @@
-import { Button } from "@/components/ui/button";
+import { zodResolver } from "@hookform/resolvers/zod";
+import axios from "axios";
+import { useRouter } from "next/navigation";
+import { Controller, useForm } from "react-hook-form";
+import toast from "react-hot-toast";
+import * as z from "zod";
+import { Button } from "./button";
 import {
   Field,
   FieldError,
   FieldGroup,
   FieldLabel,
 } from "@/components/ui/field";
-import { Input } from "@/components/ui/input";
-import { Separator } from "@/components/ui/separator";
-import { SubHeading } from "@/components/ui/sub-heading";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { OurWorkInfo } from "@prisma/client";
-import axios from "axios";
-import { useRouter } from "next/navigation";
-import { Controller, useForm } from "react-hook-form";
-import toast from "react-hot-toast";
-import * as z from "zod";
+import { SubHeading } from "./sub-heading";
+import { Separator } from "./separator";
+import { Input } from "./input";
 
 interface CMSInfoPageProps {
   cmsId: string;
-  ourWorkInfo: OurWorkInfo | null;
+  info: any;
+  page: string;
+  pagetitle: string;
   isLoading: boolean;
   onConfirm: () => void;
   onRefresh: () => void;
@@ -31,39 +32,39 @@ const formSchema = z.object({
 
 type CMSInfoPageValues = z.infer<typeof formSchema>;
 
-const CMSInfoPage = ({
+export const CmsInfoPage = ({
   cmsId,
-  ourWorkInfo,
+  info,
+  page,
+  pagetitle,
   isLoading,
   onConfirm,
   onRefresh,
 }: CMSInfoPageProps) => {
   const router = useRouter();
+  console.log(info?.title);
   const form = useForm<CMSInfoPageValues>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      title: ourWorkInfo?.title || "",
-      subtitle: ourWorkInfo?.subtitle || "",
+      title: info?.title || "",
+      subtitle: info?.subtitle || "",
     },
   });
 
-  const toastMessage = ourWorkInfo
-    ? "our work info updated"
-    : "our work info created";
+  const toastMessage = info
+    ? `Our ${pagetitle} is updated.`
+    : `Our ${pagetitle} is created.`;
 
-  const action = ourWorkInfo ? "Update" : "Create";
+  const action = info ? "Update" : "Create";
 
   const onSubmit = async (Values: CMSInfoPageValues) => {
     try {
       onConfirm();
 
-      if (ourWorkInfo) {
-        await axios.patch(
-          `/api/cms/${cmsId}/ourWorkInfo/${ourWorkInfo?.id}`,
-          Values
-        );
+      if (info) {
+        await axios.patch(`/api/cms/${cmsId}/${page}/${info?.id}`, Values);
       } else {
-        await axios.post(`/api/cms/${cmsId}/ourWorkInfo`, Values);
+        await axios.post(`/api/cms/${cmsId}/${page}`, Values);
       }
 
       router.refresh();
@@ -80,7 +81,7 @@ const CMSInfoPage = ({
     <>
       <div className="flex items-center justify-between pt-4">
         <SubHeading
-          title="Portfolio Page"
+          title={`${pagetitle} Page`}
           description="Manage the title and subtitle."
         />
       </div>
@@ -133,5 +134,3 @@ const CMSInfoPage = ({
     </>
   );
 };
-
-export default CMSInfoPage;

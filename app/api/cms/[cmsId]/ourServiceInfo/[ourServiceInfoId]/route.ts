@@ -4,36 +4,42 @@ import prismadb from "@/lib/prismadb";
 
 export async function GET(
   req: Request,
-  { params }: { params: Promise<{ cmsPageId: string; ourWorkInfoId: string }> }
+  {
+    params,
+  }: { params: Promise<{ cmsPageId: string; ourServiceInfoId: string }> }
 ) {
   try {
-    const { ourWorkInfoId } = await params;
+    const { ourServiceInfoId } = await params;
 
-    if (!ourWorkInfoId) {
-      return new NextResponse(" Our Work Info Id is required", { status: 400 });
+    if (!ourServiceInfoId) {
+      return new NextResponse(" Our Service Info Id is required", {
+        status: 400,
+      });
     }
 
-    const ourWorkInfo = await prismadb.ourWorkInfo.findUnique({
+    const ourServiceInfo = await prismadb.ourServiceInfo.findUnique({
       where: {
-        id: ourWorkInfoId,
+        id: ourServiceInfoId,
       },
     });
 
-    return NextResponse.json(ourWorkInfo);
+    return NextResponse.json(ourServiceInfo);
   } catch (error) {
-    console.log("[OUR_WORK_INFO_CMS_GET]", error);
+    console.log("[OUR_SERVICE_INFO_CMS_GET]", error);
     return new NextResponse("Internal error", { status: 500 });
   }
 }
 
 export async function PATCH(
   req: Request,
-  { params }: { params: Promise<{ cmsPageId: string; ourWorkInfoId: string }> }
+  {
+    params,
+  }: { params: Promise<{ cmsPageId: string; ourServiceInfoId: string }> }
 ) {
   try {
     const { userId } = await auth();
     const body = await req.json();
-    const { cmsPageId, ourWorkInfoId } = await params;
+    const { cmsPageId, ourServiceInfoId } = await params;
     const { title, subtitle } = body;
 
     if (!userId) {
@@ -54,13 +60,13 @@ export async function PATCH(
       return new NextResponse("CMS Page not found", { status: 404 });
     }
 
-    if (!ourWorkInfoId) {
+    if (!ourServiceInfoId) {
       return new NextResponse("Work Category ID is required", { status: 400 });
     }
 
-    const ourWorkInfo = await prismadb.ourWorkInfo.updateMany({
+    const ourServiceInfo = await prismadb.ourServiceInfo.updateMany({
       where: {
-        id: ourWorkInfoId,
+        id: ourServiceInfoId,
       },
       data: {
         title,
@@ -68,9 +74,9 @@ export async function PATCH(
       },
     });
 
-    return NextResponse.json(ourWorkInfo);
+    return NextResponse.json(ourServiceInfo);
   } catch (error) {
-    console.log("[OUR_WORK_INFO_CMS_PATCH]", error);
+    console.log("[OUR_SERVICE_INFO_CMS_PATCH]", error);
 
     if (error instanceof Error) {
       return new NextResponse(error.message, { status: 500 });
@@ -82,18 +88,22 @@ export async function PATCH(
 
 export async function DELETE(
   req: Request,
-  { params }: { params: Promise<{ cmsPageId: string; ourWorkInfoId: string }> }
+  {
+    params,
+  }: { params: Promise<{ cmsPageId: string; ourServiceInfoId: string }> }
 ) {
   try {
     const { userId } = await auth();
-    const { cmsPageId, ourWorkInfoId } = await params;
+    const { cmsPageId, ourServiceInfoId } = await params;
 
     if (!userId) {
       return new NextResponse("Unauthenticated", { status: 401 });
     }
 
-    if (!ourWorkInfoId) {
-      return new NextResponse("Our Work Info Id is required", { status: 400 });
+    if (!ourServiceInfoId) {
+      return new NextResponse("Our Service Info Id is required", {
+        status: 400,
+      });
     }
 
     const cmsPageBycmsId = await prismadb.cMSPage.findFirst({
@@ -106,15 +116,15 @@ export async function DELETE(
       return new NextResponse("CMS Page not found", { status: 404 });
     }
 
-    const ourWorkInfo = await prismadb.ourWorkInfo.deleteMany({
+    const ourServiceInfo = await prismadb.ourServiceInfo.deleteMany({
       where: {
-        id: ourWorkInfoId,
+        id: ourServiceInfoId,
       },
     });
 
-    return NextResponse.json(ourWorkInfo);
+    return NextResponse.json(ourServiceInfo);
   } catch (error) {
-    console.log("[OUR_WORK_INFO_CMS_DELETE]", error);
+    console.log("[OUR_SERVICE_INFO_CMS_DELETE]", error);
     return new NextResponse("Internal error", { status: 500 });
   }
 }
