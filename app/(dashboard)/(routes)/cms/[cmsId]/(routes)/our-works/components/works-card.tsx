@@ -33,11 +33,11 @@ const WorksCard = ({ work, cmsId }: WorksCardProps) => {
     try {
       setLoading(true);
 
-      await axios.delete(`/api/${params.cmsId}/ourWork/${work.id}`);
+      await axios.delete(`/api/cms/${cmsId}/ourWork/${work.id}`);
 
       router.refresh();
 
-      router.push(``);
+      router.push(`/cms/${cmsId}/our-works`);
 
       toast.success("Works data deleted.");
     } catch (error) {
@@ -61,6 +61,9 @@ const WorksCard = ({ work, cmsId }: WorksCardProps) => {
           <div>
             <h3 className="text-lg font-semibold">{work.title}</h3>
             <Separator />
+            <p className="text-sm font-medium text-muted-foreground">
+              {work.category}
+            </p>
             <p className="text-sm text-muted-foreground">{work.subTitle}</p>
             <p className="text-sm text-muted-foreground">
               Created at {work.createdAt}

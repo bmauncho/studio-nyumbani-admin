@@ -25,7 +25,7 @@ const WorksPage = ({
     router.push(`/cms/${cmsId}/our-works/new`);
   };
   const path = `/cms/${cmsId}/our-works`;
-
+  console.log(totalPages)
   return (
     <>
       <div className="flex items-center justify-between pt-4">
@@ -47,11 +47,13 @@ const WorksPage = ({
             ))}
           </div>
         </div>
-        <PaginationControls
-          totalPages={totalPages}
-          currentPage={currentPage}
-          path={path}
-        />
+        <div className="pt-4">
+          <PaginationControls
+            totalPages={totalPages}
+            currentPage={currentPage}
+            path={path}
+          />
+        </div>
       </div>
     </>
   );

@@ -28,12 +28,12 @@ export async function GET(
 
 export async function PATCH(
   req: Request,
-  { params }: { params: Promise<{ cmsPageId: string; ourWorkId: string }> }
+  { params }: { params: Promise<{ cmsId: string; ourWorkId: string }> }
 ) {
   try {
     const { userId } = await auth();
     const body = await req.json();
-    const { cmsPageId, ourWorkId } = await params;
+    const { cmsId, ourWorkId } = await params;
     const { title, subTitle, imageUrl } = body;
 
     if (!userId) {
@@ -46,7 +46,7 @@ export async function PATCH(
 
     const cmsPageBycmsId = await prismadb.cMSPage.findUnique({
       where: {
-        id: cmsPageId,
+        id: cmsId,
       },
     });
 
@@ -61,6 +61,7 @@ export async function PATCH(
     const ourWork = await prismadb.ourWork.updateMany({
       where: {
         id: ourWorkId,
+        cmsPageId: cmsId,
       },
       data: {
         title,
@@ -78,11 +79,11 @@ export async function PATCH(
 
 export async function DELETE(
   req: Request,
-  { params }: { params: Promise<{ cmsPageId: string; ourWorkId: string }> }
+  { params }: { params: Promise<{ cmsId: string; ourWorkId: string }> }
 ) {
   try {
     const { userId } = await auth();
-    const { cmsPageId, ourWorkId } = await params;
+    const { cmsId, ourWorkId } = await params;
 
     if (!userId) {
       return new NextResponse("Unauthenticated", { status: 401 });
@@ -94,7 +95,7 @@ export async function DELETE(
 
     const cmsPageBycmsId = await prismadb.cMSPage.findUnique({
       where: {
-        id: cmsPageId,
+        id: cmsId,
       },
     });
 

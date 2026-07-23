@@ -53,6 +53,7 @@ export const OurWorkForm = ({
   const [isLoading, setIsLoading] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
 
+  const toastMessage = initialData ? "Work updated." : "Work created.";
   const action = initialData ? "Save changes" : "Create";
 
   const form = useForm<OurWorkFormValues>({
@@ -61,7 +62,7 @@ export const OurWorkForm = ({
       title: initialData?.title ?? "",
       subTitle: initialData?.subTitle ?? "",
       imageUrl: initialData?.imageUrl ?? "",
-      workCategoryId: initialData?.id ?? "",
+      workCategoryId: initialData?.workCategoryId ?? "",
     },
   });
 
@@ -99,7 +100,7 @@ export const OurWorkForm = ({
 
       router.refresh();
 
-      toast.success("Work Created.");
+      toast.success(toastMessage);
     } catch (error) {
       toast.error("Something went wrong.");
     } finally {

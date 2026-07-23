@@ -9,7 +9,7 @@ const OurWorkDetailPage = async ({
 }) => {
   const { ourWorkId, cmsId } = await params;
 
-  const ourWork = await prismadb.ourWork.findUnique({
+  const ourWork = await prismadb.ourWork.findFirst({
     where: {
       id: ourWorkId,
       cmsPageId: cmsId,

@@ -26,7 +26,7 @@ const OurWorksPage = async ({
     },
   });
 
-  const [ourWorks, totalPages] = await Promise.all([
+  const [ourWorks, totalWorks] = await Promise.all([
     prismadb.ourWork.findMany({
       where: {
         cmsPageId: cmsId,
@@ -47,6 +47,8 @@ const OurWorksPage = async ({
       },
     }),
   ]);
+
+  const totalPages = Math.ceil(totalWorks / pageSize);
 
   const formattedWorks: WorksColumn[] = ourWorks.map((work) => ({
     id: work.id,

@@ -24,7 +24,7 @@ export const CMSTable = ({ data }: CMsTableProps) => {
   };
 
   const onEdit = (id: string, pageType: string) => {
-    router.push(`/app/cms/${id}/${pageType}`);
+    router.push(`/cms/${id}/${pageType}`);
   };
 
   const onDelete = async () => {
@@ -117,8 +117,8 @@ export const CMSTable = ({ data }: CMsTableProps) => {
                             variant="outline"
                             size="sm"
                             onClick={() => {
-                              console.log(CMS.pageType);
                               onEdit(CMS.id, CMS.pageType);
+                              //console.log(CMS.pageType);
                             }}
                           >
                             <Edit2 className="w-4 h-4" />
