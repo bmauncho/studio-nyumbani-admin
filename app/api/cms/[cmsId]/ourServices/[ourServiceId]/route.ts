@@ -4,37 +4,37 @@ import prismadb from "@/lib/prismadb";
 
 export async function GET(
   req: Request,
-  { params }: { params: Promise<{ cmsPageId: string; ourWorkId: string }> }
+  { params }: { params: Promise<{ cmsPageId: string; ourServiceId: string }> }
 ) {
   try {
-    const { ourWorkId } = await params;
+    const { ourServiceId } = await params;
 
-    if (!ourWorkId) {
-      return new NextResponse(" ourWorkId ID is required", { status: 400 });
+    if (!ourServiceId) {
+      return new NextResponse(" ourServiceId ID is required", { status: 400 });
     }
 
-    const ourWorkcms = await prismadb.ourWork.findUnique({
+    const ourServicecms = await prismadb.ourService.findUnique({
       where: {
-        id: ourWorkId,
+        id: ourServiceId,
       },
     });
 
-    return NextResponse.json(ourWorkcms);
+    return NextResponse.json(ourServicecms);
   } catch (error) {
-    console.log("[OUR_WORK_CMS_GET]", error);
+    console.log("[OUR_SERVICE_CMS_GET]", error);
     return new NextResponse("Internal error", { status: 500 });
   }
 }
 
 export async function PATCH(
   req: Request,
-  { params }: { params: Promise<{ cmsId: string; ourWorkId: string }> }
+  { params }: { params: Promise<{ cmsId: string; ourServiceId: string }> }
 ) {
   try {
     const { userId } = await auth();
     const body = await req.json();
-    const { cmsId, ourWorkId } = await params;
-    const { title, subTitle, imageUrl } = body;
+    const { cmsId, ourServiceId } = await params;
+    const { title, description } = body;
 
     if (!userId) {
       return new NextResponse("Unauthenticated", { status: 401 });
@@ -44,6 +44,10 @@ export async function PATCH(
       return new NextResponse("Title is required", { status: 400 });
     }
 
+    if (!description) {
+      return new NextResponse("Description is required", { status: 400 });
+    }
+
     const cmsPageBycmsId = await prismadb.cMSPage.findUnique({
       where: {
         id: cmsId,
@@ -54,43 +58,42 @@ export async function PATCH(
       return new NextResponse("CMS Page not found", { status: 404 });
     }
 
-    if (!ourWorkId) {
-      return new NextResponse("Our Work ID is required", { status: 400 });
+    if (!ourServiceId) {
+      return new NextResponse("Our Service ID is required", { status: 400 });
     }
 
-    const ourWork = await prismadb.ourWork.updateMany({
+    const ourServicecms = await prismadb.ourService.updateMany({
       where: {
-        id: ourWorkId,
+        id: ourServiceId,
         cmsPageId: cmsId,
       },
       data: {
         title,
-        subTitle,
-        imageUrl,
+        description,
       },
     });
 
-    return NextResponse.json(ourWork);
+    return NextResponse.json(ourServicecms);
   } catch (error) {
-    console.log("[OUR_WORK_CMS_PATCH]", error);
+    console.log("[OUR_SERVICE_CMS_PATCH]", error);
     return new NextResponse("Internal error", { status: 500 });
   }
 }
 
 export async function DELETE(
   req: Request,
-  { params }: { params: Promise<{ cmsId: string; ourWorkId: string }> }
+  { params }: { params: Promise<{ cmsId: string; ourServiceId: string }> }
 ) {
   try {
     const { userId } = await auth();
-    const { cmsId, ourWorkId } = await params;
+    const { cmsId, ourServiceId } = await params;
 
     if (!userId) {
       return new NextResponse("Unauthenticated", { status: 401 });
     }
 
-    if (!ourWorkId) {
-      return new NextResponse("Our Work ID is required", { status: 400 });
+    if (!ourServiceId) {
+      return new NextResponse("Our Service ID is required", { status: 400 });
     }
 
     const cmsPageBycmsId = await prismadb.cMSPage.findUnique({
@@ -103,15 +106,15 @@ export async function DELETE(
       return new NextResponse("CMS Page not found", { status: 404 });
     }
 
-    const ourWork = await prismadb.ourWork.deleteMany({
+    const ourService = await prismadb.ourService.deleteMany({
       where: {
-        id: ourWorkId,
+        id: ourServiceId,
       },
     });
 
-    return NextResponse.json(ourWork);
+    return NextResponse.json(ourService);
   } catch (error) {
-    console.log("[OUR_WORK_DELETE]", error);
+    console.log("[OUR_SERVICE_DELETE]", error);
     return new NextResponse("Internal error", { status: 500 });
   }
 }

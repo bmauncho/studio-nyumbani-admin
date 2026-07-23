@@ -1,6 +1,8 @@
 import { Params } from "@/types";
 import OurServicesClient from "./components/client";
 import prismadb from "@/lib/prismadb";
+import { OurServicesColumn } from "./components/our-services-column";
+import { format } from "date-fns";
 
 const OurServicesPage = async ({
   params,
@@ -18,10 +20,20 @@ const OurServicesPage = async ({
     },
   });
 
+  const formattedServices: OurServicesColumn[] =
+    cmsPage?.ourServices.map((service) => {
+      return {
+        id: service.id,
+        title: service.title,
+        description: service.description || "",
+        createdAt: format(service.createdAt, "MMMM do yyyy"),
+      };
+    }) || [];
+
   return (
     <div className="flex-col">
       <div className="flex-1 space-y-4">
-        <OurServicesClient data={cmsPage} />
+        <OurServicesClient data={cmsPage} ourServices={formattedServices} />
       </div>
     </div>
   );

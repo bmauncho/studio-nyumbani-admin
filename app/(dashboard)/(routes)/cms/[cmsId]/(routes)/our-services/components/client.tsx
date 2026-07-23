@@ -9,12 +9,14 @@ import { useState } from "react";
 import OurServices from "./our-services";
 import { CmsInfoPage } from "@/components/ui/cms-info-page";
 import { CMSPage, OurServiceInfo } from "@prisma/client";
+import { OurServicesColumn } from "./our-services-column";
 
 interface OurServicesClientProps {
   data: (CMSPage & { ourServiceInfo: OurServiceInfo | null }) | null;
+  ourServices: OurServicesColumn[];
 }
 
-const OurServicesClient = ({ data }: OurServicesClientProps) => {
+const OurServicesClient = ({ data, ourServices }: OurServicesClientProps) => {
   const router = useRouter();
   const [open, setOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
@@ -51,7 +53,11 @@ const OurServicesClient = ({ data }: OurServicesClientProps) => {
         onConfirm={() => setIsLoading(true)}
         onRefresh={() => setIsLoading(false)}
       />
-      <OurServices isLoading={isLoading} />
+      <OurServices
+        cmsId={data?.id ?? ""}
+        data={ourServices}
+        isLoading={isLoading}
+      />
     </>
   );
 };

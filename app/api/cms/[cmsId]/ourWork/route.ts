@@ -58,7 +58,7 @@ export async function POST(
 
     return NextResponse.json(ourWorkcms);
   } catch (error) {
-    console.log("[OURWORK_CMS_POST]", error);
+    console.log("[OUR_WORK_CMS_POST]", error);
     return new NextResponse("Internal error", { status: 500 });
   }
 }
@@ -82,7 +82,7 @@ export async function GET(
 
     return NextResponse.json(portfoliocms);
   } catch (error) {
-    console.log("[OURWORK__CMS_GET]", error);
+    console.log("[OUR_WORK__CMS_GET]", error);
     return new NextResponse("Internal error", { status: 500 });
   }
 }
