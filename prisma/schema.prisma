@@ -188,20 +188,21 @@ model Message {
 
 
 model CMSPage{
-  id          String            @id @default(cuid())
-  userId      String
-  name        String   
-  type        CMSType           @unique
-  hero        Hero?             @relation("CmsPageToHero")
-  contactUs   ContactUs?        @relation("CmsPageToContactUs")
-  ourServiceInfo OurServiceInfo? @relation("CmsPageToOurServiceInfo")
-  ourServices  OurService[]     @relation("CmsPageToOurService")
-  ourWorkInfo  OurWorkInfo?     @relation("CmsPageToOurWorkInfo")
-  ourWork      OurWork[]        @relation("CmsPageToOurWork")
-  testimonials Testimonial[]    @relation("CmsPageToTestimonials")
-  workCategories WorkCategory[] @relation("CmsPageToWorkCategory")
-  createdAt DateTime    @default(now())
-  updatedAt DateTime    @updatedAt
+  id              String            @id @default(cuid())
+  userId          String
+  name            String   
+  type            CMSType           @unique
+  hero            Hero?             @relation("CmsPageToHero")
+  contactUs       ContactUs?        @relation("CmsPageToContactUs")
+  ourServiceInfo  OurServiceInfo?   @relation("CmsPageToOurServiceInfo")
+  ourServices     OurService[]      @relation("CmsPageToOurService")
+  ourWorkInfo     OurWorkInfo?      @relation("CmsPageToOurWorkInfo")
+  ourWork         OurWork[]         @relation("CmsPageToOurWork")
+  testimonialInfo TestimonialInfo?  @relation("CmsPageToTestimonialInfo")
+  testimonials    Testimonial[]     @relation("CmsPageToTestimonials")
+  workCategories  WorkCategory[]    @relation("CmsPageToWorkCategory")
+  createdAt       DateTime          @default(now())
+  updatedAt       DateTime          @updatedAt
 }
 
 enum CMSType{
@@ -315,6 +316,31 @@ model OurServiceInfo{
   @@index([cmsPageId])
 }
 
+model TestimonialInfo{
+  id                String          @id @default(cuid())
+  cmsPageId         String          @unique
+  cmsPage           CMSPage         @relation("CmsPageToTestimonialInfo",fields: [cmsPageId], references: [id],onDelete: Cascade)
+  title             String
+  subtitle          String?
+  createdAt         DateTime        @default(now())
+  updatedAt         DateTime        @updatedAt
+
+  @@index([cmsPageId])
+}
+
+model Testimonial {
+  id        String   @id @default(cuid())
+  cmsPageId     String   
+  cmsPage       CMSPage      @relation("CmsPageToTestimonials",fields: [cmsPageId], references: [id], onDelete: Cascade)
+  name      String
+  role      String?
+  content   String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([cmsPageId])
+}
+
 model ContactUs{
   id        String   @id @default(cuid())
   cmsPageId     String   @unique  // one-to-one with CMS
@@ -355,16 +381,4 @@ model SocialMedia{
   @@index([contactUsId])
 }
 
-model Testimonial {
-  id        String   @id @default(cuid())
-  cmsPageId     String   
-  cmsPage       CMSPage      @relation("CmsPageToTestimonials",fields: [cmsPageId], references: [id], onDelete: Cascade)
-  name      String
-  role      String?
-  content   String
-  image     String?
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
 
-  @@index([cmsPageId])
-}

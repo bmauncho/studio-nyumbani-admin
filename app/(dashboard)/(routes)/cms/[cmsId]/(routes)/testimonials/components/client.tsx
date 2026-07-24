@@ -1,25 +1,28 @@
 "use client";
+import { AlertModal } from "@/components/modals/alert-modal";
 import { Button } from "@/components/ui/button";
 import { CMSForm } from "@/components/ui/cms-form";
+import { CmsInfoPage } from "@/components/ui/cms-info-page";
 import { Heading } from "@/components/ui/heading";
 import { Separator } from "@/components/ui/separator";
+import { CMSPage, TestimonialInfo } from "@prisma/client";
+import axios from "axios";
 import { Trash } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-import OurServices from "./our-services";
-import { CmsInfoPage } from "@/components/ui/cms-info-page";
-import { CMSPage, OurServiceInfo } from "@prisma/client";
-import { OurServicesColumn } from "./our-services-column";
-import { AlertModal } from "@/components/modals/alert-modal";
 import toast from "react-hot-toast";
-import axios from "axios";
+import Testimonials from "./testimonials";
+import { TestimonialColumn } from "./testimonial-column";
 
-interface OurServicesClientProps {
-  data: (CMSPage & { ourServiceInfo: OurServiceInfo | null }) | null;
-  ourServices: OurServicesColumn[];
+interface TestimonialsClientProps {
+  data: (CMSPage & { testimonialInfo: TestimonialInfo | null }) | null;
+  testimonials: TestimonialColumn[];
 }
 
-const OurServicesClient = ({ data, ourServices }: OurServicesClientProps) => {
+const TestimonialsClient = ({
+  data,
+  testimonials,
+}: TestimonialsClientProps) => {
   const router = useRouter();
   const [open, setOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
@@ -34,7 +37,7 @@ const OurServicesClient = ({ data, ourServices }: OurServicesClientProps) => {
 
       router.refresh();
 
-      toast.success("Service CMS deleted.");
+      toast.success("Testimonials CMS deleted.");
     } catch (error) {
       toast.error("Something went wrong.");
     } finally {
@@ -52,8 +55,8 @@ const OurServicesClient = ({ data, ourServices }: OurServicesClientProps) => {
       />
       <div className="flex items-center justify-between">
         <Heading
-          title="Services CMS Page"
-          description="Manage services section."
+          title="Testimonials CMS Page"
+          description="Manage testimonials section."
         />
         <Button
           disabled={isLoading}
@@ -74,20 +77,16 @@ const OurServicesClient = ({ data, ourServices }: OurServicesClientProps) => {
       />
       <CmsInfoPage
         cmsId={data?.id ?? ""}
-        info={data?.ourServiceInfo}
-        page="ourServiceInfo"
-        pagetitle="Services Info"
+        info={data?.testimonialInfo}
+        page="testimonialInfo"
+        pagetitle="Testimonials Info"
         isLoading={isLoading}
         onConfirm={() => setIsLoading(true)}
         onRefresh={() => setIsLoading(false)}
       />
-      <OurServices
-        cmsId={data?.id ?? ""}
-        data={ourServices}
-        isLoading={isLoading}
-      />
+      <Testimonials cmsId={data?.id ?? ""} data={testimonials} isLoading={isLoading} />
     </>
   );
 };
 
-export default OurServicesClient;
+export default TestimonialsClient;
