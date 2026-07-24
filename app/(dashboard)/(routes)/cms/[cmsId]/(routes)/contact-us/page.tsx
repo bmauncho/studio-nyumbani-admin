@@ -17,6 +17,7 @@ const ContactUsPage = async ({
     },
     include: {
       contactUs: true,
+      socialMediaPlatforms:true,
     },
   });
 
@@ -33,12 +34,16 @@ const ContactUsPage = async ({
     where: {
       getInTouchId: contactUs?.getInTouch?.id,
     },
+    include: {
+      platform: true,
+    },
   });
 
   const formattedSocials: SocialMediaColumn[] =
     socials?.map((social) => ({
       id: social.id,
-      platform: social.platform,
+      platform: social.platform.platform,
+      userName: social.userName,
       url: social.url,
       createdAt: format(social.createdAt, "MMMM do yyyy"),
     })) || [];

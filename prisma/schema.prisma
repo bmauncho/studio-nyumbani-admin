@@ -188,13 +188,14 @@ model Message {
 
 
 model CMSPage{
-  id              String            @id @default(cuid())
+  id              String                    @id @default(cuid())
   userId          String
   name            String   
-  type            CMSType           @unique
-  hero            Hero?             @relation("CmsPageToHero")
-  contactUs       ContactUs?        @relation("CmsPageToContactUs")
-  ourServiceInfo  OurServiceInfo?   @relation("CmsPageToOurServiceInfo")
+  type            CMSType                    @unique
+  hero            Hero?                      @relation("CmsPageToHero")
+  contactUs       ContactUs?                 @relation("CmsPageToContactUs")
+  socialMediaPlatforms SocialMediaPlatform[] @relation("CmsPageToSocialMediaPlatform")
+  ourServiceInfo  OurServiceInfo?            @relation("CmsPageToOurServiceInfo")
   ourServices     OurService[]      @relation("CmsPageToOurService")
   ourWorkInfo     OurWorkInfo?      @relation("CmsPageToOurWorkInfo")
   ourWork         OurWork[]         @relation("CmsPageToOurWork")
@@ -374,12 +375,28 @@ model SocialMedia{
   id          String   @id @default(cuid())
   getInTouchId String
   getInTouch  GetInTouch @relation(fields: [getInTouchId], references: [id],onDelete: Cascade)
-  platform    String
+  platformId  String
+  platform    SocialMediaPlatform @relation(fields:[platformId],references: [id],onDelete: Cascade)
+  userName    String
   url         String
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
 
   @@index([getInTouchId])
+  @@index([platformId])
+}
+
+model SocialMediaPlatform{
+  id          String   @id @default(cuid())
+  cmsPageId       String      
+  cmsPage         CMSPage       @relation("CmsPageToSocialMediaPlatform", fields: [cmsPageId], references: [id],onDelete: Cascade)
+  platform        String
+  socialMedia     SocialMedia[] 
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@index([cmsPageId])
+
 }
 
 

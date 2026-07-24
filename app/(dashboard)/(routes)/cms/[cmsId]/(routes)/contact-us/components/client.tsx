@@ -1,5 +1,10 @@
 "use client";
-import { CMSPage, ContactUs, GetInTouch } from "@prisma/client";
+import {
+  CMSPage,
+  ContactUs,
+  GetInTouch,
+  SocialMediaPlatform,
+} from "@prisma/client";
 import { SocialMediaColumn } from "./socials-column";
 import { AlertModal } from "@/components/modals/alert-modal";
 import { Heading } from "@/components/ui/heading";
@@ -14,9 +19,15 @@ import { CMSForm } from "@/components/ui/cms-form";
 import { CmsInfoPage } from "@/components/ui/cms-info-page";
 import { GetInTouchForm } from "./getInTouch-form";
 import Socials from "./socials";
+import SocialPlatforms from "./social-platforms";
 
 interface ContactUsClientProps {
-  data: (CMSPage & { contactUs: ContactUs | null }) | null;
+  data:
+    | (CMSPage & {
+        contactUs: ContactUs | null;
+        socialMediaPlatforms: SocialMediaPlatform[] | null;
+      })
+    | null;
   socials: SocialMediaColumn[];
   getInTouch: GetInTouch | null;
 }
@@ -57,8 +68,8 @@ const ContactUsClient = ({
       />
       <div className="flex items-center justify-between">
         <Heading
-          title="Testimonials CMS Page"
-          description="Manage testimonials section."
+          title="Contact Us CMS Page"
+          description="Manage Contact section."
         />
         <Button
           disabled={isLoading}
@@ -91,7 +102,8 @@ const ContactUsClient = ({
         initialData={getInTouch}
         isLoading={isLoading}
       />
-      <Socials />
+      <SocialPlatforms cmsId={data?.id ?? ""} socials={data?.socialMediaPlatforms ?? null}/>
+      <Socials cmsId={data?.id ?? ""} socials={socials ?? null} />
     </>
   );
 };

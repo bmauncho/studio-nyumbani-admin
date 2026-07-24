@@ -1,19 +1,29 @@
-import { useParams, useRouter } from "next/navigation";
+import { AlertModal } from "@/components/modals/alert-modal";
+import { Button } from "@/components/ui/button";
+import { Separator } from "@/components/ui/separator";
+import { SocialMediaPlatform } from "@prisma/client";
+import axios from "axios";
+import { format } from "date-fns";
+import { Copy, Edit2, Trash } from "lucide-react";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 import toast from "react-hot-toast";
-import { OurServicesColumn } from "./our-services-column";
-import axios from "axios";
-import { AlertModal } from "@/components/modals/alert-modal";
-import { Separator } from "@/components/ui/separator";
-import { Button } from "@/components/ui/button";
-import { Copy, Edit2, Trash } from "lucide-react";
 
-interface OurServiceCardProps {
+interface SocialPlatformCardProps {
   cmsId: string;
-  service: OurServicesColumn;
+  platform: SocialMediaPlatform;
+  onRefresh: () => void;
+  onClick: () => void;
+  onEdit: () => void;
 }
 
-const OurServiceCard = ({ cmsId, service }: OurServiceCardProps) => {
+const SocialPlatformCard = ({
+  cmsId,
+  platform,
+  onRefresh,
+  onClick,
+  onEdit,
+}: SocialPlatformCardProps) => {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
   const [open, setOpen] = useState(false);
@@ -23,29 +33,26 @@ const OurServiceCard = ({ cmsId, service }: OurServiceCardProps) => {
     toast.success("Service ID copied to clipboard");
   };
 
-  const onEdit = (id: string) => {
-    router.push(`/cms/${cmsId}/our-services/${id}`);
-  };
-
   const onDelete = async () => {
     try {
+      onClick();
       setLoading(true);
 
-      await axios.delete(`/api/cms/${cmsId}/ourServices/${service.id}`);
+      await axios.delete(`/api/cms/${cmsId}/socialMedia/${platform.id}`);
 
       router.refresh();
 
-      router.push(`/cms/${cmsId}/our-services`);
-
-      toast.success("Service data deleted.");
+      toast.success("Platform deleted.");
     } catch (error) {
       toast.error("Something went wrong.");
     } finally {
       setLoading(false);
       setOpen(false);
+      onRefresh();
     }
   };
 
+  const date: string = format(platform.createdAt, "MMMM do yyy");
   return (
     <>
       <AlertModal
@@ -55,32 +62,30 @@ const OurServiceCard = ({ cmsId, service }: OurServiceCardProps) => {
         loading={loading}
       />
       <div className="bg-card rounded-lg border border-border overflow-hidden hover:shadow-lg transition-shadow">
+        {/* Work Category info */}
         <div className="p-4 space-y-4">
           <div>
-            <h3 className="text-lg font-semibold">{service.title}</h3>
+            <h3 className="text-lg font-semibold">{platform.platform}</h3>
             <Separator />
-            <p className="text-sm font-medium text-muted-foreground pt-4">
-              {service.description}
-            </p>
-            <p className="text-sm text-muted-foreground pt-4">
-              Created at {service.createdAt}
+            <p className="text-sm text-muted-foreground pt-2">
+              Created on {date}
             </p>
           </div>
 
           <div className="flex-1 flex items-center justify-end">
             <div className="flex space-x-2">
-              <Button variant="outline" onClick={() => onCopy(service.id)}>
+              <Button variant="outline" onClick={() => onCopy(platform.id)}>
                 <Copy className="h-4 w-4" />
               </Button>
-              <Button
-                variant="outline"
-                onClick={() => {
-                  onEdit(service.id);
-                }}
-              >
+              <Button variant="outline" onClick={() => onEdit()}>
                 <Edit2 className="h-4 w-4" />
               </Button>
-              <Button variant="destructive" onClick={() => setOpen(true)}>
+              <Button
+                variant="destructive"
+                onClick={() => {
+                  setOpen(true);
+                }}
+              >
                 <Trash className="h-4 w-4" />
               </Button>
             </div>
@@ -91,4 +96,4 @@ const OurServiceCard = ({ cmsId, service }: OurServiceCardProps) => {
   );
 };
 
-export default OurServiceCard;
+export default SocialPlatformCard;
