@@ -82,7 +82,7 @@ export const CmsInfoPage = ({
       <div className="flex items-center justify-between pt-4">
         <SubHeading
           title={`${pagetitle} Page`}
-          description="Manage the title and subtitle."
+          description="Manage the info page."
         />
       </div>
       <Separator />

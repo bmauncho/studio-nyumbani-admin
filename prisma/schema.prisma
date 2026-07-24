@@ -346,11 +346,9 @@ model ContactUs{
   cmsPageId     String   @unique  // one-to-one with CMS
   cmsPage       CMSPage      @relation("CmsPageToContactUs",fields: [cmsPageId], references: [id],onDelete: Cascade)
   title     String
-  description String
-  email     String
-  phone     String
+  subtitle String
   getInTouch GetInTouch? 
-  socails   SocialMedia[]
+
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
@@ -362,7 +360,10 @@ model GetInTouch{
   contactUsId       String         @unique
   contactUs         ContactUs      @relation(fields: [contactUsId], references: [id],onDelete: Cascade)
   title             String
-  description       String
+  subtitle          String
+  email             String
+  phone             String
+  socails           SocialMedia[]
   createdAt         DateTime       @default(now())
   updatedAt         DateTime       @updatedAt
 
@@ -371,14 +372,14 @@ model GetInTouch{
 
 model SocialMedia{
   id          String   @id @default(cuid())
-  contactUsId       String
-  contactUs         ContactUs      @relation(fields: [contactUsId], references: [id],onDelete: Cascade)
+  getInTouchId String
+  getInTouch  GetInTouch @relation(fields: [getInTouchId], references: [id],onDelete: Cascade)
   platform    String
   url         String
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
 
-  @@index([contactUsId])
+  @@index([getInTouchId])
 }
 
 

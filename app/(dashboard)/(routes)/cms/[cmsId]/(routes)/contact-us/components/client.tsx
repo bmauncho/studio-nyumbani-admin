@@ -1,28 +1,31 @@
 "use client";
+import { CMSPage, ContactUs, GetInTouch } from "@prisma/client";
+import { SocialMediaColumn } from "./socials-column";
 import { AlertModal } from "@/components/modals/alert-modal";
-import { Button } from "@/components/ui/button";
-import { CMSForm } from "@/components/ui/cms-form";
-import { CmsInfoPage } from "@/components/ui/cms-info-page";
 import { Heading } from "@/components/ui/heading";
-import { Separator } from "@/components/ui/separator";
-import { CMSPage, TestimonialInfo } from "@prisma/client";
-import axios from "axios";
+import { Button } from "@/components/ui/button";
 import { Trash } from "lucide-react";
+import toast from "react-hot-toast";
+import axios from "axios";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-import toast from "react-hot-toast";
-import Testimonials from "./testimonials";
-import { TestimonialColumn } from "./testimonial-column";
+import { Separator } from "@/components/ui/separator";
+import { CMSForm } from "@/components/ui/cms-form";
+import { CmsInfoPage } from "@/components/ui/cms-info-page";
+import { GetInTouchForm } from "./getInTouch-form";
+import Socials from "./socials";
 
-interface TestimonialsClientProps {
-  data: (CMSPage & { testimonialInfo: TestimonialInfo | null }) | null;
-  testimonials: TestimonialColumn[];
+interface ContactUsClientProps {
+  data: (CMSPage & { contactUs: ContactUs | null }) | null;
+  socials: SocialMediaColumn[];
+  getInTouch: GetInTouch | null;
 }
 
-const TestimonialsClient = ({
+const ContactUsClient = ({
   data,
-  testimonials,
-}: TestimonialsClientProps) => {
+  socials,
+  getInTouch,
+}: ContactUsClientProps) => {
   const router = useRouter();
   const [open, setOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
@@ -37,14 +40,13 @@ const TestimonialsClient = ({
 
       router.refresh();
 
-      toast.success("Testimonials CMS deleted.");
+      toast.success("Contact us CMS deleted.");
     } catch (error) {
       toast.error("Something went wrong.");
     } finally {
       setIsLoading(false);
     }
   };
-
   return (
     <>
       <AlertModal
@@ -68,18 +70,30 @@ const TestimonialsClient = ({
         </Button>
       </div>
       <Separator />
-      <CmsInfoPage
+      <CMSForm
         cmsId={data?.id ?? ""}
-        info={data?.testimonialInfo}
-        page="testimonialInfo"
-        pagetitle="Testimonials Info"
+        initialData={data}
         isLoading={isLoading}
         onConfirm={() => setIsLoading(true)}
         onRefresh={() => setIsLoading(false)}
       />
-      <Testimonials cmsId={data?.id ?? ""} data={testimonials} isLoading={isLoading} />
+      <CmsInfoPage
+        cmsId={data?.id ?? ""}
+        info={data?.contactUs}
+        page="contactUs"
+        pagetitle="Contact Us Info"
+        isLoading={isLoading}
+        onConfirm={() => setIsLoading(true)}
+        onRefresh={() => setIsLoading(false)}
+      />
+      <GetInTouchForm
+        cmsId={data?.id ?? ""}
+        initialData={getInTouch}
+        isLoading={isLoading}
+      />
+      <Socials />
     </>
   );
 };
 
-export default TestimonialsClient;
+export default ContactUsClient;
