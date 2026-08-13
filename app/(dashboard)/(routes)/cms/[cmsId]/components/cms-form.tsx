@@ -66,7 +66,7 @@ export const CmsForm = ({
       setLoading(true);
 
       if (initialData) {
-        await axios.patch(`/api/cms/${params.cmsId}`, data);
+        await axios.patch(`/api/cms/${initialData?.id}`, data);
       } else {
         await axios.post(`/api/cms`, data);
       }
@@ -87,7 +87,7 @@ export const CmsForm = ({
     try {
       setLoading(true);
 
-      await axios.delete(`/api/cms/${params.cmsId}`);
+      await axios.delete(`/api/cms/${initialData?.id}`);
 
       router.refresh();
 

@@ -4,6 +4,8 @@ import { SubHeading } from "@/components/ui/sub-heading";
 import { Plus } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { SocialMediaColumn } from "./socials-column";
+import SocialsCard from "./socials-card";
+import { format } from "date-fns";
 
 interface SocialsProps {
   cmsId: string;
@@ -26,7 +28,18 @@ const Socials = ({ cmsId, socials }: SocialsProps) => {
         </Button>
       </div>
       <Separator />
-      <div>{/*  */}</div>
+      <div className="pt-4">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+          {socials?.map((social) => (
+            <SocialsCard
+              key={social.id}
+              cmsId={cmsId}
+              social={social}
+              onEdit={() => {}}
+            />
+          ))}
+        </div>
+      </div>
     </>
   );
 };

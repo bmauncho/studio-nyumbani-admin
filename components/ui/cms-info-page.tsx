@@ -42,7 +42,7 @@ export const CmsInfoPage = ({
   onRefresh,
 }: CMSInfoPageProps) => {
   const router = useRouter();
-  console.log(info?.title);
+  //console.log(info?.title);
   const form = useForm<CMSInfoPageValues>({
     resolver: zodResolver(formSchema),
     defaultValues: {

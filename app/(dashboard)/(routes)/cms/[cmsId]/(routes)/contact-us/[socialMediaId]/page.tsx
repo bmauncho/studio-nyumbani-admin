@@ -9,26 +9,43 @@ const SocialsPage = async ({
 }) => {
   const { socialMediaId, cmsId } = await params;
 
+  const cmsPage = await prismadb.cMSPage.findUnique({
+    where: {
+      id: cmsId,
+    },
+    include: {
+      socialMediaPlatforms: true,
+    },
+  });
+
   const contactUs = await prismadb.contactUs.findUnique({
     where: {
       cmsPageId: cmsId,
     },
-    include: {
-      getInTouch: true,
-    },
   });
+
+  const platforms = cmsPage?.socialMediaPlatforms;
 
   const socialMedia = await prismadb.socialMedia.findFirst({
     where: {
       id: socialMediaId,
-      getInTouchId: contactUs?.getInTouch?.id,
+      contactUsId: contactUs?.id,
+    },
+    include: {
+      platform: true,
     },
   });
-  
+
   return (
     <div className="flex-col">
       <div className="flex-1 space-y-4">
-        <SocialForm cmsId={cmsId} initialData={socialMedia} />
+        <SocialForm
+          cmsId={cmsId}
+          initialData={socialMedia}
+          platforms={platforms ?? null}
+          page="contactUs"
+          socialMediaPage="social-media"
+        />
       </div>
     </div>
   );

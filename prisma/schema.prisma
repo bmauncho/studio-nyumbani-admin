@@ -349,6 +349,7 @@ model ContactUs{
   title     String
   subtitle String
   getInTouch GetInTouch? 
+  socialMedia SocialMedia[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -364,7 +365,6 @@ model GetInTouch{
   subtitle          String
   email             String
   phone             String
-  socails           SocialMedia[]
   createdAt         DateTime       @default(now())
   updatedAt         DateTime       @updatedAt
 
@@ -373,8 +373,8 @@ model GetInTouch{
 
 model SocialMedia{
   id          String   @id @default(cuid())
-  getInTouchId String
-  getInTouch  GetInTouch @relation(fields: [getInTouchId], references: [id],onDelete: Cascade)
+  contactUsId       String         @unique
+  contactUs         ContactUs      @relation(fields: [contactUsId], references: [id],onDelete: Cascade)
   platformId  String
   platform    SocialMediaPlatform @relation(fields:[platformId],references: [id],onDelete: Cascade)
   userName    String
@@ -382,8 +382,8 @@ model SocialMedia{
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
 
-  @@index([getInTouchId])
   @@index([platformId])
+  @@index([contactUsId])
 }
 
 model SocialMediaPlatform{

@@ -17,7 +17,7 @@ const ContactUsPage = async ({
     },
     include: {
       contactUs: true,
-      socialMediaPlatforms:true,
+      socialMediaPlatforms: true,
     },
   });
 
@@ -32,7 +32,7 @@ const ContactUsPage = async ({
 
   const socials = await prismadb.socialMedia.findMany({
     where: {
-      getInTouchId: contactUs?.getInTouch?.id,
+      contactUsId: contactUs?.id,
     },
     include: {
       platform: true,
