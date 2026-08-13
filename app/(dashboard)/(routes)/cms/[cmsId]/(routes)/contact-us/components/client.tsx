@@ -99,10 +99,17 @@ const ContactUsClient = ({
       />
       <GetInTouchForm
         cmsId={data?.id ?? ""}
+        page="contactUs"
+        getInTouchPage="get-in-touch"
         initialData={getInTouch}
         isLoading={isLoading}
+        onConfirm={() => setIsLoading(true)}
+        onRefresh={() => setIsLoading(false)}
       />
-      <SocialPlatforms cmsId={data?.id ?? ""} socials={data?.socialMediaPlatforms ?? null}/>
+      <SocialPlatforms
+        cmsId={data?.id ?? ""}
+        socials={data?.socialMediaPlatforms ?? null}
+      />
       <Socials cmsId={data?.id ?? ""} socials={socials ?? null} />
     </>
   );
