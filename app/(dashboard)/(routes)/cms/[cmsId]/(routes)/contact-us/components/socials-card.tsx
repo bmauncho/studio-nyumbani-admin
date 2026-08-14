@@ -21,18 +21,20 @@ const SocialsCard = ({ cmsId, social, onEdit }: SocialsCardProps) => {
 
   const onCopy = (id: string) => {
     navigator.clipboard.writeText(id);
-    toast.success("Service ID copied to clipboard");
+    toast.success("Social Media ID copied to clipboard");
   };
 
   const onDelete = async () => {
     try {
       setLoading(true);
 
-      await axios.delete(`/api/cms/${cmsId}/socialMedia/${social.id}`);
+      await axios.delete(
+        `/api/cms/${cmsId}/contactUs/social-media/${social.id}`
+      );
 
       router.refresh();
 
-      toast.success("Platform deleted.");
+      toast.success("Social deleted.");
     } catch (error) {
       toast.error("Something went wrong.");
     } finally {

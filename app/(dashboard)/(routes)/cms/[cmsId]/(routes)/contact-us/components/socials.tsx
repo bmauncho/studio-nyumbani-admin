@@ -18,6 +18,10 @@ const Socials = ({ cmsId, socials }: SocialsProps) => {
     router.push(`/cms/${cmsId}/contact-us/new`);
   };
 
+  const onEdit=(id: string)=>{
+    router.push(`/cms/${cmsId}/contact-us/${id}`);
+  };
+
   return (
     <>
       <div className="flex items-center justify-between pt-4">
@@ -35,7 +39,7 @@ const Socials = ({ cmsId, socials }: SocialsProps) => {
               key={social.id}
               cmsId={cmsId}
               social={social}
-              onEdit={() => {}}
+              onEdit={() => onEdit(social.id)}
             />
           ))}
         </div>

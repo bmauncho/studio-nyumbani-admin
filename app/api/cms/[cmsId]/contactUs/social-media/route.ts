@@ -13,13 +13,6 @@ export async function POST(
     const body = await req.json();
     const { platformId, userName, url } = body;
 
-    console.log("SOCIAL MEDIA CREATE:", {
-      cmsId,
-      platformId,
-      userName,
-      url,
-    });
-
     if (!userId) {
       return new NextResponse("Unauthenticated", { status: 401 });
     }
@@ -52,7 +45,6 @@ export async function POST(
       },
     });
 
-    console.log("CONTACT US:", contactUs);
     if (!contactUs) {
       return new NextResponse("Contact Us not found", {
         status: 404,
@@ -64,8 +56,6 @@ export async function POST(
         id: platformId,
       },
     });
-
-    console.log("PLATFORM:", platform);
 
     if (!platform) {
       return new NextResponse("Social Media Platform not found", {

@@ -75,18 +75,18 @@ export const SocialForm = ({
     try {
       setIsLoading(true);
       if (initialData) {
-        console.log("patch");
         await axios.patch(
           `/api/cms/${cmsId}/${page}/${socialMediaPage}/${initialData?.id}`,
           Values
         );
       } else {
-        console.log("post");
         await axios.post(
           `/api/cms/${cmsId}/${page}/${socialMediaPage}`,
           Values
         );
       }
+
+      router.push(`/cms/${cmsId}/contact-us`);
 
       router.refresh();
 
@@ -106,7 +106,7 @@ export const SocialForm = ({
         `/api/cms/${cmsId}/${page}/${socialMediaPage}/${initialData?.id}`
       );
 
-      router.push(`/cms/${cmsId}}/${page}`);
+      router.push(`/cms/${cmsId}/contact-us`);
 
       router.refresh();
 
@@ -127,7 +127,7 @@ export const SocialForm = ({
         loading={isLoading}
       />
       <div className=" flex items-center justify-between">
-        <Heading title="Our Works" description="Manage our works" />
+        <Heading title="Socials" description="Manage our socials" />
         <Button
           disabled={isLoading}
           variant="destructive"
@@ -146,7 +146,7 @@ export const SocialForm = ({
               control={form.control}
               render={({ field, fieldState }) => (
                 <Field>
-                  <FieldLabel>Work Category</FieldLabel>
+                  <FieldLabel>Social Platform</FieldLabel>
                   <Select
                     disabled={isLoading}
                     onValueChange={field.onChange}

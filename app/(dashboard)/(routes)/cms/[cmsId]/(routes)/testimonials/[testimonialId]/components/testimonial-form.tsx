@@ -105,7 +105,7 @@ export const TestimonialForm = ({
         loading={isLoading}
       />
       <div className=" flex items-center justify-between">
-        <Heading title="Our Works" description="Manage our works" />
+        <Heading title="Testimonials" description="Manage our testimonials" />
         {initialData && (
           <Button
             disabled={isLoading}

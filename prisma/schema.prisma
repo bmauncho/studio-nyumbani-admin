@@ -373,7 +373,7 @@ model GetInTouch{
 
 model SocialMedia{
   id          String   @id @default(cuid())
-  contactUsId       String         @unique
+  contactUsId       String         
   contactUs         ContactUs      @relation(fields: [contactUsId], references: [id],onDelete: Cascade)
   platformId  String
   platform    SocialMediaPlatform @relation(fields:[platformId],references: [id],onDelete: Cascade)

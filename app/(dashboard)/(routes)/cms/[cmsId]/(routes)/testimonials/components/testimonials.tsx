@@ -22,10 +22,10 @@ const Testimonials = ({ cmsId, data, isLoading }: TestimonialsProps) => {
     <>
       {" "}
       <div className="flex items-center justify-between">
-        <SubHeading title="Services" description="Manage services section." />
+        <SubHeading title="Testimonials" description="Manage testimonials section." />
         <Button disabled={isLoading} onClick={onAddService}>
           <Plus className="h-4 w-4" />
-          <span className="hidden sm:block ml-2">Add New Work(s)</span>
+          <span className="hidden sm:block ml-2">Add New Testimonial(s)</span>
         </Button>
       </div>
       <Separator />
