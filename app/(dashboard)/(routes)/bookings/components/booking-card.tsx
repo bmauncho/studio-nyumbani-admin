@@ -5,7 +5,6 @@ import { Calendar, Clock, Edit2 } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 
 import { Button } from "@/components/ui/button";
-import { useParams, useRouter } from "next/navigation";
 import { BookingsModal } from "@/components/modals/bookings-modal";
 import { useState } from "react";
 import { BookingColumn } from "./booking-column";
@@ -16,19 +15,44 @@ interface BookingCardProps {
 }
 
 const BookingCard = ({ data }: BookingCardProps) => {
-  const params = useParams();
-  const router = useRouter();
   const [isOpen, setIsOpen] = useState(false);
 
   const status = getBookingStatus(data.status);
+
+  const [loading, setLoading] = useState(false);
+
+  const updateStatus = async (bookingId: string, status: string) => {
+    try {
+      setLoading(true);
+      const res = await fetch(`/api/bookings/${bookingId}`, {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ status }),
+      });
+
+      if (!res.ok) {
+        const err = await res.json();
+        throw new Error(err.error || "Failed to update booking");
+      }
+
+      // refresh the bookings list / close modal / show toast, etc.
+    } catch (error) {
+      console.error(error);
+      // show an error toast here
+    } finally {
+      setLoading(false);
+    }
+  };
   return (
     <>
       <BookingsModal
         data={data}
         isOpen={isOpen}
         onClose={() => setIsOpen(false)}
-        onCancel={() => {}}
-        onComplete={() => {}}
+        loading={loading}
+        onConfirm={() => updateStatus(data.id, "CONFIRMED")}
+        onComplete={() => updateStatus(data.id, "COMPLETED")}
+        onCancel={() => updateStatus(data.id, "CANCELLED")}
       />
       <div className="bg-card rounded-lg border border-border p-6 hover:shadow-lg transition-all">
         <div className="space-y-3">

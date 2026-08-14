@@ -14,16 +14,20 @@ interface BookingsModalProps {
   data: BookingColumn;
   isOpen: boolean;
   onClose: () => void;
+  onConfirm: () => void;
   onComplete: () => void;
   onCancel: () => void;
+  loading?: boolean;
 }
 
 export const BookingsModal = ({
   data,
   isOpen,
   onClose,
+  onConfirm,
   onComplete,
   onCancel,
+  loading = false,
 }: BookingsModalProps) => {
   const [isMounted, setIsMounted] = useState(false);
 
@@ -78,13 +82,28 @@ export const BookingsModal = ({
         <Separator />
         {/* Action Buttons */}
         <div className="flex gap-2">
-          <Button variant="outline" className="flex-1">
+          <Button
+            variant="outline"
+            className="flex-1"
+            disabled={loading}
+            onClick={onConfirm}
+          >
             Confirm
           </Button>
-          <Button variant="outline" className="flex-1">
+          <Button
+            variant="outline"
+            className="flex-1"
+            disabled={loading}
+            onClick={onComplete}
+          >
             Completed
           </Button>
-          <Button variant="destructive" className="flex-1">
+          <Button
+            variant="destructive"
+            className="flex-1"
+            disabled={loading}
+            onClick={onCancel}
+          >
             Cancel
           </Button>
         </div>
