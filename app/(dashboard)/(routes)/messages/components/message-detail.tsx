@@ -5,9 +5,15 @@ import { MessageColumn } from "./message-column";
 
 interface MessageDetailProps {
   message: MessageColumn;
+  onArchive?: () => void;
+  onDelete?: () => void;
 }
 
-const MessageDetail = ({ message }: MessageDetailProps) => {
+const MessageDetail = ({
+  message,
+  onArchive,
+  onDelete,
+}: MessageDetailProps) => {
   return (
     <>
       <div>
@@ -16,10 +22,10 @@ const MessageDetail = ({ message }: MessageDetailProps) => {
             <div className="flex items-start justify-between">
               <div>
                 <p className="text-sm text-muted-foreground mt-1">
-                  From: {message.customerName}
+                  From: {message.name}
                 </p>
                 <p className="text-xs text-muted-foreground">
-                  {message.date},{message.time}
+                  {message.createdAt}
                 </p>
               </div>
               {!message.read && (
@@ -34,10 +40,15 @@ const MessageDetail = ({ message }: MessageDetailProps) => {
             </div>
             {/* Actions */}
             <div className="border-t border-border pt-4 flex items-center justify-end gap-2">
-              <Button variant="outline" size="sm">
+              <Button variant="outline" size="sm" onClick={onArchive}>
                 <Archive className="w-4 h-4" />
               </Button>
-              <Button variant="outline" size="sm" className="text-red-500">
+              <Button
+                variant="outline"
+                size="sm"
+                className="text-red-500"
+                onClick={onDelete}
+              >
                 <Trash2 className="w-4 h-4" />
               </Button>
             </div>

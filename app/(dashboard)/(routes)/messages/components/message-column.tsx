@@ -1,9 +1,10 @@
 export interface MessageColumn {
   id: string;
-  customerName: string;
-  customerEmail: string;
+  name: string;
+  email: string;
   message: string;
-  date: string;
+  createdAt: string;
   time: string;
+  archived?: boolean;
   read: boolean;
 }
