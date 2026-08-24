@@ -52,12 +52,21 @@ export async function GET(req: Request) {
       },
       include: {
         hero: true,
-        contactUs: true,
+        contactUs: {
+          include: {
+            getInTouch: true,
+            socialMedia: true,
+          },
+        },
         socialMediaPlatforms: true,
         ourServiceInfo: true,
         ourServices: true,
         ourWorkInfo: true,
-        ourWork: true,
+        ourWork: {
+          include: {
+            category: true,
+          },
+        },
         testimonialInfo: true,
         testimonials: true,
         workCategories: true,
