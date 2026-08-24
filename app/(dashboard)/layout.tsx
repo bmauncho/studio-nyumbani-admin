@@ -15,16 +15,22 @@ export default async function DashBoardPage({
   const cookieStore = await cookies();
   const selectedStoreId = cookieStore.get("selectedStoreId")?.value;
 
-  if (!userId) redirect("/sign-in");
+  let store = null;
+  let Stores = null;
 
-  // 👇 fetch store here
-  const stores = await prismadb.store.findMany({
-    where: { userId },
-  });
+  if (userId) {
+    // 👇 fetch store here
 
-  const store = selectedStoreId
-    ? (stores.find((s) => s.id === selectedStoreId) ?? stores[0])
-    : stores[0];
+    const stores = await prismadb.store.findMany({
+      where: { userId },
+    });
+
+    store = selectedStoreId
+      ? (stores.find((s) => s.id === selectedStoreId) ?? stores[0])
+      : stores[0];
+
+    Stores = stores;
+  }
 
   return (
     <>

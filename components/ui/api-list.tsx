@@ -16,6 +16,8 @@ import { Button } from "./button";
 interface ApiListProps {
   title: string;
   description: string;
+  isStore?: boolean;
+  entityTitle?: string;
   entityName?: string;
   entityIdName?: string;
   className?: string;
@@ -24,6 +26,8 @@ interface ApiListProps {
 export const ApiList = ({
   title,
   description,
+  isStore = true,
+  entityTitle,
   entityName,
   entityIdName,
   className,
@@ -32,7 +36,9 @@ export const ApiList = ({
   const origin = useOrigin();
   const [isOpen, setIsOpen] = useState(false);
 
-  const baseUrl = `${origin}/api/${params.storeId}`;
+  const baseUrl = isStore
+    ? `${origin}/api/${params.storeId}`
+    : `${origin}/api/${entityName}`;
 
   return (
     <div className={cn("space-y-4", className)}>
@@ -55,6 +61,14 @@ export const ApiList = ({
           {/* Always show GET all if entityName exists */}
           {!entityName && (
             <ApiAlert title="GET" description={`${baseUrl}`} variant="public" />
+          )}
+
+          {entityTitle && (
+            <ApiAlert
+              title={entityTitle}
+              description={`${baseUrl}`}
+              variant="public"
+            />
           )}
 
           {/* Only show these if both entityName and entityIdName exist */}
