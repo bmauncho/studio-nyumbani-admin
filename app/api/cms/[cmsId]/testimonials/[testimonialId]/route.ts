@@ -34,7 +34,7 @@ export async function PATCH(
     const { userId } = await auth();
     const body = await req.json();
     const { cmsId, testimonialId } = await params;
-    const { name, role, content } = body;
+    const { name, role, content,rating } = body;
 
     if (!userId) {
       return new NextResponse("Unauthenticated", { status: 401 });
@@ -71,6 +71,7 @@ export async function PATCH(
         name,
         role,
         content,
+        rating,
       },
     });
 

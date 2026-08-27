@@ -1,7 +1,7 @@
 "use client";
 import { Separator } from "@/components/ui/separator";
 
-import { Calendar, Clock, Edit2 } from "lucide-react";
+import { Calendar, Clock, Edit2, Trash } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 
 import { Button } from "@/components/ui/button";
@@ -9,12 +9,16 @@ import { BookingsModal } from "@/components/modals/bookings-modal";
 import { useState } from "react";
 import { BookingColumn } from "./booking-column";
 import { BOOKING_STATUS_COLORS, getBookingStatus } from "../lib/booking-status";
+import toast from "react-hot-toast";
+import axios from "axios";
+import { useRouter } from "next/navigation";
 
 interface BookingCardProps {
   data: BookingColumn;
 }
 
 const BookingCard = ({ data }: BookingCardProps) => {
+  const router = useRouter();
   const [isOpen, setIsOpen] = useState(false);
 
   const status = getBookingStatus(data.status);
@@ -22,25 +26,17 @@ const BookingCard = ({ data }: BookingCardProps) => {
   const [loading, setLoading] = useState(false);
 
   const updateStatus = async (bookingId: string, status: string) => {
+    setLoading(true);
     try {
-      setLoading(true);
-      const res = await fetch(`/api/bookings/${bookingId}`, {
-        method: "PATCH",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ status }),
-      });
-
-      if (!res.ok) {
-        const err = await res.json();
-        throw new Error(err.error || "Failed to update booking");
-      }
-
-      // refresh the bookings list / close modal / show toast, etc.
+      await axios.patch(`/api/bookings/${bookingId}`, { status });
+      toast.success("Booking Updated.");
+      router.refresh();
     } catch (error) {
       console.error(error);
-      // show an error toast here
+      toast.error("Something went wrong.");
     } finally {
       setLoading(false);
+      setIsOpen(false);
     }
   };
   return (
@@ -85,6 +81,17 @@ const BookingCard = ({ data }: BookingCardProps) => {
             </div>
             {/* Actions */}
             <div className="flex items-center gap-2">
+              {
+                status === "COMPLETED" || status === "CANCELLED" && (
+                  <Button
+                    variant="outline"
+                    size="icon"
+                    onClick={() => setIsOpen(true)}
+                  >
+                    <Trash className="h-4 w-4" />
+                  </Button>
+                )
+              }
               <Button
                 variant="outline"
                 size="icon"

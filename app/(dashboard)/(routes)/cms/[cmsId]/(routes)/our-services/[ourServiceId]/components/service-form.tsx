@@ -8,19 +8,10 @@ import {
   FieldLabel,
 } from "@/components/ui/field";
 import { Heading } from "@/components/ui/heading";
-import ImageUpload from "@/components/ui/image-upload";
 import { Input } from "@/components/ui/input";
-import {
-  Select,
-  SelectContent,
-  SelectGroup,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
 import { Separator } from "@/components/ui/separator";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { OurService, OurWork, WorkCategory } from "@prisma/client";
+import { OurService} from "@prisma/client";
 import axios from "axios";
 import { Trash } from "lucide-react";
 import { useState } from "react";

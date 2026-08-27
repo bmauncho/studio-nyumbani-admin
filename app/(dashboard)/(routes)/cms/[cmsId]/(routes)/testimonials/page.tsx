@@ -26,6 +26,7 @@ const TestimonialsPage = async ({
       name: testimonial.name,
       role: testimonial.role ?? "",
       content: testimonial.content,
+      rating: testimonial.rating ?? 0,
       createdAt: format(testimonial.createdAt, "MMMM do yyyy"),
     })) || [];
 

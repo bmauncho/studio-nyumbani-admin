@@ -12,10 +12,11 @@ const statusUpdateSchema = z.object({
 // Fetch a single booking's details
 export async function GET(
   req: Request,
-  { params }: { params: { bookingId: string } }
+  { params }: { params: Promise<{ bookingId: string }> }
 ) {
   try {
-    if (!params.bookingId) {
+    const { bookingId } = await params;
+    if (!bookingId) {
       return NextResponse.json(
         { error: "Booking id is required" },
         { status: 400 }
@@ -23,7 +24,7 @@ export async function GET(
     }
 
     const booking = await prismadb.booking.findUnique({
-      where: { id: params.bookingId },
+      where: { id: bookingId },
     });
 
     if (!booking) {
@@ -39,15 +40,14 @@ export async function GET(
     );
   }
 }
-
-// PATCH /api/[storeId]/bookings/[bookingId]
 // Update only the status of a booking (e.g. confirm, cancel, complete)
 export async function PATCH(
   req: Request,
-  { params }: { params: { bookingId: string } }
+  { params }: { params: Promise<{ bookingId: string }> }
 ) {
   try {
-    if (!params.bookingId) {
+    const { bookingId } = await params;
+    if (!bookingId) {
       return NextResponse.json(
         { error: "Booking id is required" },
         { status: 400 }
@@ -69,7 +69,7 @@ export async function PATCH(
 
     // Make sure the booking actually exists before trying to update it
     const existing = await prismadb.booking.findUnique({
-      where: { id: params.bookingId },
+      where: { id: bookingId },
     });
 
     if (!existing) {
@@ -77,7 +77,7 @@ export async function PATCH(
     }
 
     const booking = await prismadb.booking.update({
-      where: { id: params.bookingId },
+      where: { id: bookingId },
       data: { status: result.data.status },
     });
 
@@ -95,10 +95,11 @@ export async function PATCH(
 // Remove a booking entirely
 export async function DELETE(
   req: Request,
-  { params }: { params: { bookingId: string } }
+  { params }: { params: Promise<{ bookingId: string }> }
 ) {
   try {
-    if (!params.bookingId) {
+    const { bookingId } = await params;
+    if (!bookingId) {
       return NextResponse.json(
         { error: "Booking id is required" },
         { status: 400 }
@@ -106,7 +107,7 @@ export async function DELETE(
     }
 
     const existing = await prismadb.booking.findUnique({
-      where: { id: params.bookingId },
+      where: { id: bookingId },
     });
 
     if (!existing) {
@@ -114,7 +115,7 @@ export async function DELETE(
     }
 
     await prismadb.booking.delete({
-      where: { id: params.bookingId },
+      where: { id: bookingId },
     });
 
     return NextResponse.json({ message: "Booking deleted" });

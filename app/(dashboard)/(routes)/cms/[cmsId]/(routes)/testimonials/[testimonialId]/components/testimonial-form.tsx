@@ -10,6 +10,14 @@ import {
 import { Heading } from "@/components/ui/heading";
 import { Input } from "@/components/ui/input";
 import { InputGroup, InputGroupTextarea } from "@/components/ui/input-group";
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { Separator } from "@/components/ui/separator";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Testimonial } from "@prisma/client";
@@ -17,7 +25,7 @@ import axios from "axios";
 import { Trash } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-import { Controller, useForm } from "react-hook-form";
+import { Controller, Resolver, useForm } from "react-hook-form";
 import toast from "react-hot-toast";
 import * as z from "zod";
 
@@ -30,6 +38,7 @@ const formSchema = z.object({
   name: z.string().min(1),
   role: z.string().min(1),
   content: z.string().min(1),
+  rating: z.coerce.number().int().min(1).max(5),
 });
 
 type TestimonialFormValues = z.infer<typeof formSchema>;
@@ -47,11 +56,12 @@ export const TestimonialForm = ({
     : "Testimonial created.";
   const action = initialData ? "Save changes" : "Create";
   const form = useForm<TestimonialFormValues>({
-    resolver: zodResolver(formSchema),
+    resolver: zodResolver(formSchema) as Resolver<TestimonialFormValues>,
     defaultValues: {
       name: initialData?.name ?? "",
       role: initialData?.role ?? "",
       content: initialData?.content ?? "",
+      rating: initialData?.rating ?? 0,
     },
   });
 
@@ -121,7 +131,7 @@ export const TestimonialForm = ({
       <div>
         <form onSubmit={form.handleSubmit(onSubmit)}>
           <FieldGroup>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
               <Controller
                 name="name"
                 control={form.control}
@@ -150,6 +160,37 @@ export const TestimonialForm = ({
                       disabled={isLoading}
                       placeholder="Testimonial Role"
                     />
+                    {fieldState.invalid && (
+                      <FieldError errors={[fieldState.error]} />
+                    )}
+                  </Field>
+                )}
+              />
+              <Controller
+                name="rating"
+                control={form.control}
+                render={({ field, fieldState }) => (
+                  <Field>
+                    <FieldLabel>Rating</FieldLabel>
+                    <Select
+                      disabled={isLoading}
+                      onValueChange={(value) => field.onChange(Number(value))}
+                      value={field.value?.toString() ?? ""}
+                      defaultValue={field.value?.toString()}
+                    >
+                      <SelectTrigger>
+                        <SelectValue placeholder="Select a rating" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectGroup>
+                          {[1, 2, 3, 4, 5].map((value) => (
+                            <SelectItem key={value} value={value.toString()}>
+                              {value} {value === 1 ? "Star" : "Stars"}
+                            </SelectItem>
+                          ))}
+                        </SelectGroup>
+                      </SelectContent>
+                    </Select>
                     {fieldState.invalid && (
                       <FieldError errors={[fieldState.error]} />
                     )}

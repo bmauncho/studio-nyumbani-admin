@@ -6,7 +6,7 @@ import axios from "axios";
 import { AlertModal } from "@/components/modals/alert-modal";
 import { Separator } from "@/components/ui/separator";
 import { Button } from "@/components/ui/button";
-import { Copy, Edit2, Trash } from "lucide-react";
+import { Copy, Edit2, Trash, Star } from "lucide-react";
 
 interface TestimonialCardProps {
   cmsId: string;
@@ -61,6 +61,19 @@ const TestimonialCard = ({ cmsId, testimonial }: TestimonialCardProps) => {
             <p className="text-sm font-medium text-muted-foreground pt-4">
               {testimonial.role}
             </p>
+            <div className="flex gap-1 mb-4">
+              {[...Array(5)].map((_, i) => (
+                <Star
+                  key={i}
+                  size={18}
+                  className={
+                    i < testimonial.rating
+                      ? "fill-primary text-primary"
+                      : "fill-none text-muted-foreground"
+                  }
+                />
+              ))}
+            </div>
             <p className="text-sm font-medium text-muted-foreground pt-4">
               {testimonial.content}
             </p>

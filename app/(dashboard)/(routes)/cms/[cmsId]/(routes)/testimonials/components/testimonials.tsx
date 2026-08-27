@@ -20,7 +20,6 @@ const Testimonials = ({ cmsId, data, isLoading }: TestimonialsProps) => {
   };
   return (
     <>
-      {" "}
       <div className="flex items-center justify-between">
         <SubHeading title="Testimonials" description="Manage testimonials section." />
         <Button disabled={isLoading} onClick={onAddService}>

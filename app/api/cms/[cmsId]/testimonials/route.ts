@@ -10,7 +10,7 @@ export async function POST(
     const { userId } = await auth();
     const body = await req.json();
     const { cmsId } = await params;
-    const { name, role, content } = body;
+    const { name, role, content,rating } = body;
 
     if (!userId) {
       return new NextResponse("Unauthenticated", { status: 401 });
@@ -43,6 +43,7 @@ export async function POST(
         name,
         role,
         content,
+        rating,
         cmsPageId: cmsId,
       },
     });

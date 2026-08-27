@@ -60,6 +60,10 @@ export const BookingsModal = ({
             <p className="font-medium text-foreground">{data.email}</p>
           </div>
           <div>
+            <p className="text-sm text-muted-foreground">Phone</p>
+            <p className="font-medium text-foreground">{data.phone}</p>
+          </div>
+          <div>
             <p className="text-sm text-muted-foreground">Date & Time</p>
             <p className="font-medium text-foreground">
               {data.date} at {data.time}

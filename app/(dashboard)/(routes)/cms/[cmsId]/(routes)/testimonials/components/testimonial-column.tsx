@@ -3,5 +3,6 @@ export interface TestimonialColumn {
   name: string;
   role: string | null;
   content: string;
+  rating: number;
   createdAt: string;
 }
