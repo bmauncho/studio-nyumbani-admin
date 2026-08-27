@@ -28,6 +28,13 @@ const IntegrationsClient = () => {
           entityTitle="NEXT_PUBLIC_API_BOOKING_URL"
           entityName="bookings"
         />
+        <ApiList
+          title="Messages"
+          description="Api calls for messages."
+          isStore={false}
+          entityTitle="NEXT_PUBLIC_API_MESSAGES_URL"
+          entityName="messages"
+        />
       </div>
     </>
   );

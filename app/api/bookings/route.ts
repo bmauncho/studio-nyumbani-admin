@@ -52,12 +52,9 @@ export async function GET() {
     const bookings = await prismadb.booking.findMany({
       orderBy: { createdAt: "desc" },
     });
-    return NextResponse.json(bookings);
+    return corsJson(bookings, { status: 200 });
   } catch (error) {
     console.error("[BOOKINGS_GET]", error);
-    return NextResponse.json(
-      { error: "Something went wrong." },
-      { status: 500 }
-    );
+    return corsJson({ error: "Something went wrong." }, { status: 500 });
   }
 }

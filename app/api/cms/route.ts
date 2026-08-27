@@ -55,7 +55,11 @@ export async function GET(req: Request) {
         contactUs: {
           include: {
             getInTouch: true,
-            socialMedia: true,
+            socialMedia: {
+              include: {
+                platform: true,
+              },
+            },
           },
         },
         socialMediaPlatforms: true,
