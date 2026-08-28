@@ -61,7 +61,7 @@ export async function PATCH(
       return NextResponse.json(
         {
           error: "Invalid status value",
-          details: result.error.flatten().fieldErrors,
+          details: z.flattenError(result.error).fieldErrors,
         },
         { status: 400 }
       );

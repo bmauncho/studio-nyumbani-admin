@@ -4,15 +4,19 @@ import { z } from "zod";
 
 export async function GET(
   req: Request,
-  { params }: { params: { messageId: string } }
+  { params }: { params: Promise<{ messageId: string }> }
 ) {
   try {
-    if (!params.messageId) {
-      return NextResponse.json({ error: "Message id required" }, { status: 400 });
+    const { messageId } = await params;
+    if (!messageId) {
+      return NextResponse.json(
+        { error: "Message id required" },
+        { status: 400 }
+      );
     }
 
     const message = await prismadb.message.findUnique({
-      where: { id: params.messageId },
+      where: { id: messageId },
     });
 
     if (!message) {
@@ -33,11 +37,15 @@ const patchSchema = z.object({
 
 export async function PATCH(
   req: Request,
-  { params }: { params: { messageId: string } }
+  { params }: { params: Promise<{ messageId: string }> }
 ) {
   try {
-    if (!params.messageId) {
-      return NextResponse.json({ error: "Message id required" }, { status: 400 });
+    const { messageId } = await params;
+    if (!messageId) {
+      return NextResponse.json(
+        { error: "Message id required" },
+        { status: 400 }
+      );
     }
 
     const body = await req.json();
@@ -45,7 +53,7 @@ export async function PATCH(
 
     if (!parsed.success) {
       return NextResponse.json(
-        { errors: parsed.error.flatten().fieldErrors },
+        { errors: z.flattenError(parsed.error).fieldErrors },
         { status: 400 }
       );
     }
@@ -58,7 +66,7 @@ export async function PATCH(
     }
 
     const updated = await prismadb.message.update({
-      where: { id: params.messageId },
+      where: { id: messageId },
       data: parsed.data,
     });
 
@@ -71,15 +79,19 @@ export async function PATCH(
 
 export async function DELETE(
   req: Request,
-  { params }: { params: { messageId: string } }
+  { params }: { params: Promise<{ messageId: string }> }
 ) {
   try {
-    if (!params.messageId) {
-      return NextResponse.json({ error: "Message id required" }, { status: 400 });
+    const { messageId } = await params;
+    if (!messageId) {
+      return NextResponse.json(
+        { error: "Message id required" },
+        { status: 400 }
+      );
     }
 
     await prismadb.message.delete({
-      where: { id: params.messageId },
+      where: { id: messageId },
     });
 
     return NextResponse.json({ success: true });

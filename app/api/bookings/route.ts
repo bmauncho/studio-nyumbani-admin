@@ -23,7 +23,7 @@ export async function POST(req: Request) {
       );
     }
 
-    const data = result.data;
+    
     const booking = await prismadb.booking.create({
       data: {
         name: data.name,

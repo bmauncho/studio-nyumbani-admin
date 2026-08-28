@@ -5,7 +5,6 @@ import { MessageColumn } from "./components/message-column";
 
 const MessagesPage = async () => {
   const messages = await prismadb.message.findMany({
-    where: { archived: false },
     orderBy: { createdAt: "desc" },
   });
 

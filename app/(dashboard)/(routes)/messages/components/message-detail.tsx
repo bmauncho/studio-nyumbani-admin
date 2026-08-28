@@ -28,8 +28,10 @@ const MessageDetail = ({
                   {message.createdAt}
                 </p>
               </div>
-              {!message.read && (
+              {!message.read ? (
                 <Badge className="bg-blue-100 text-blue-800">Unread</Badge>
+              ) : (
+                <Badge className="bg-green-100 text-green-800">Read</Badge>
               )}
             </div>
 
