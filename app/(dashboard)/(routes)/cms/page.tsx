@@ -2,6 +2,7 @@ import prismadb from "@/lib/prismadb";
 import CMSClient from "./components/client";
 import { CMSColumn } from "./components/cms-column";
 import { format } from "date-fns";
+import { CMSType } from "@prisma/client";
 
 const CMSPages = async () => {
   const cms_Pages = await prismadb.cMSPage.findMany({
@@ -19,10 +20,21 @@ const CMSPages = async () => {
     };
   });
 
+  // All possible enum values, e.g. ["HOME", "ABOUT", "CONTACT", ...]
+  const allPageTypes = Object.values(CMSType);
+
+  // Types that currently exist in the DB
+  const existingTypes = new Set(cms_Pages.map((p) => p.type));
+
+  // Types that are missing
+  const missingTypes = allPageTypes.filter((t) => !existingTypes.has(t));
+
+  const allTypesCreated = missingTypes.length === 0;
+
   return (
     <div className="flex-col">
       <div className="flex-1 space-y-4">
-        <CMSClient data={formattedPages} />
+        <CMSClient data={formattedPages} allTypesCreated={allTypesCreated}/>
       </div>
     </div>
   );

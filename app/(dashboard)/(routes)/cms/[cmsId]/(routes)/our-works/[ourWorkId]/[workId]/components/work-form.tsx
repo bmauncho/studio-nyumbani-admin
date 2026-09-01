@@ -10,61 +10,50 @@ import {
 import { Heading } from "@/components/ui/heading";
 import ImageUpload from "@/components/ui/image-upload";
 import { Input } from "@/components/ui/input";
-import {
-  Select,
-  SelectContent,
-  SelectGroup,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
 import { Separator } from "@/components/ui/separator";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { OurWork, WorkCategory } from "@prisma/client";
+import { Work } from "@prisma/client";
 import axios from "axios";
 import { Trash } from "lucide-react";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import toast from "react-hot-toast";
 import * as z from "zod";
-import { useRouter } from "next/navigation";
 
-interface OurWorksFormProps {
-  initialData: OurWork | null;
-  workCategories: WorkCategory[];
+interface WorkFormProps {
   cmsId: string;
+  ourWorkId: string;
+  initialData: {
+    id: string;
+    title: string;
+    description: string | null;
+    images: { url: string }[];
+  } | null;
 }
 
 const formSchema = z.object({
   title: z.string().min(1),
-  subTitle: z.string().min(1),
-  imageUrl: z.string().min(1),
-  workCategoryId: z.string().min(1),
+  description: z.string().min(1),
+  images: z.object({ url: z.string().min(1) }).array(),
 });
 
-type OurWorkFormValues = z.infer<typeof formSchema>;
+type WorkFormValues = z.infer<typeof formSchema>;
 
-export const OurWorkForm = ({
-  initialData,
-  workCategories,
-  cmsId,
-}: OurWorksFormProps) => {
+export const WorkForm = ({ cmsId, ourWorkId, initialData }: WorkFormProps) => {
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
 
-  const toastMessage = initialData
-    ? "Work collection updated."
-    : "Work Collection created.";
-  const action = initialData ? "Save Collection changes" : "Create Collection";
+  const toastMessage = initialData ? "Work updated." : "Work created.";
+  const action = initialData ? "Save work changes" : "Create work";
 
-  const form = useForm<OurWorkFormValues>({
+  const form = useForm<WorkFormValues>({
     resolver: zodResolver(formSchema),
     defaultValues: {
       title: initialData?.title ?? "",
-      subTitle: initialData?.subTitle ?? "",
-      imageUrl: initialData?.imageUrl ?? "",
-      workCategoryId: initialData?.workCategoryId ?? "",
+      description: initialData?.description ?? "",
+      images: initialData?.images ?? [],
     },
   });
 
@@ -72,13 +61,15 @@ export const OurWorkForm = ({
     try {
       setIsLoading(true);
 
-      await axios.delete(`/api/cms/${cmsId}/ourWork/${initialData?.id}`);
+      await axios.delete(
+        `/api/cms/${cmsId}/ourWork/${ourWorkId}/work/${initialData?.id}`
+      );
 
       router.push(`/cms/${cmsId}/our-works`);
 
       router.refresh();
 
-      toast.success("Work collection deleted.");
+      toast.success("Work deleted.");
     } catch (error) {
       toast.error("Something went wrong.");
     } finally {
@@ -86,16 +77,16 @@ export const OurWorkForm = ({
     }
   };
 
-  const onSubmit = async (values: OurWorkFormValues) => {
+  const onSubmit = async (values: WorkFormValues) => {
     setIsLoading(true);
     try {
       if (initialData) {
         await axios.patch(
-          `/api/cms/${cmsId}/ourWork/${initialData?.id}`,
+          `/api/cms/${cmsId}/ourWork/${ourWorkId}/work${initialData?.id}`,
           values
         );
       } else {
-        await axios.post(`/api/cms/${cmsId}/ourWork`, values);
+        await axios.post(`/api/cms/${cmsId}/ourWork/${ourWorkId}/work`, values);
       }
 
       router.push(`/cms/${cmsId}/our-works`);
@@ -119,10 +110,7 @@ export const OurWorkForm = ({
         loading={isLoading}
       />
       <div className=" flex items-center justify-between">
-        <Heading
-          title="Our Works Collection"
-          description="Manage our works Collection"
-        />
+        <Heading title="Our Work" description="Manage our work" />
         <Button
           disabled={isLoading}
           variant="destructive"
@@ -137,17 +125,34 @@ export const OurWorkForm = ({
         <form onSubmit={form.handleSubmit(onSubmit)}>
           <FieldGroup>
             <Controller
-              name="imageUrl"
+              name="images"
               control={form.control}
               render={({ field, fieldState }) => (
                 <Field>
                   <div className="bg-card rounded-lg border border-border space-y-2 p-4 overflow-hidden">
-                    <FieldLabel>Background Image</FieldLabel>
+                    <FieldLabel>Work Images</FieldLabel>
                     <ImageUpload
-                      value={field.value ? [field.value] : []}
-                      onChange={field.onChange}
-                      onRemove={() => field.onChange("")}
-                      billboard={true}
+                      value={(field.value || []).map((image) => image.url)}
+                      onChange={(url: string) => {
+                        const current = form.getValues("images") || [];
+
+                        const updated = [...current, { url }];
+
+                        //console.log("Before:", current);
+                        //console.log("Added:", url);
+
+                        field.onChange(updated);
+                      }}
+                      onRemove={(url) => {
+                        const current = form.getValues("images") || [];
+
+                        const updated = current.filter(
+                          (image) => image.url !== url
+                        );
+
+                        field.onChange(updated);
+                      }}
+                      billboard={false}
                       disabled={isLoading}
                     />
                     {fieldState.error && (
@@ -157,7 +162,7 @@ export const OurWorkForm = ({
                 </Field>
               )}
             />
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-3 gap-8">
               <Controller
                 name="title"
                 control={form.control}
@@ -176,49 +181,15 @@ export const OurWorkForm = ({
                 )}
               />
               <Controller
-                name="workCategoryId"
+                name="description"
                 control={form.control}
                 render={({ field, fieldState }) => (
-                  <Field>
-                    <FieldLabel>Work Collection Category</FieldLabel>
-                    <Select
-                      disabled={isLoading}
-                      onValueChange={field.onChange}
-                      value={field.value}
-                      defaultValue={field.value}
-                    >
-                      <SelectTrigger>
-                        <SelectValue
-                          defaultValue={field.value}
-                          placeholder="Select work collection Category"
-                        />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectGroup>
-                          {workCategories.map((category) => (
-                            <SelectItem key={category.id} value={category.id}>
-                              {category.category}
-                            </SelectItem>
-                          ))}
-                        </SelectGroup>
-                      </SelectContent>
-                    </Select>
-                    {fieldState.invalid && (
-                      <FieldError errors={[fieldState.error]} />
-                    )}
-                  </Field>
-                )}
-              />
-              <Controller
-                name="subTitle"
-                control={form.control}
-                render={({ field, fieldState }) => (
-                  <div className="bg-card rounded-lg border-border">
+                  <div className="bg-card rounded-lg border-border md:col-span-2 lg:col-span-2">
                     <Field>
-                      <FieldLabel>Work collection Subtitle</FieldLabel>
+                      <FieldLabel>Work description</FieldLabel>
                       <Input
                         {...field}
-                        placeholder="Work collection Subtitle"
+                        placeholder="Work description"
                         disabled={isLoading}
                       />
                       {fieldState.error && (

@@ -263,6 +263,7 @@ model WorkCategory{
   cmsPage         CMSPage       @relation("CmsPageToWorkCategory", fields: [cmsPageId], references: [id],onDelete: Cascade)
   category        String
   OurWorks        OurWork[]
+  categoryWorks   Work[]
   createdAt       DateTime      @default(now())
   updatedAt       DateTime      @updatedAt
 
@@ -275,6 +276,7 @@ model Work{
   OurWork     OurWork       @relation(fields: [ourWorkId], references: [id] ,onDelete:Cascade)
   title       String
   description String?
+  workCategory    WorkCategory[]
   images      WorkImage[]
   createdAt   DateTime      @default(now())
   updatedAt   DateTime      @updatedAt

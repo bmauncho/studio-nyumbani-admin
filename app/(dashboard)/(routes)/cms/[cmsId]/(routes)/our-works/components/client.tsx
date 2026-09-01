@@ -15,11 +15,12 @@ import {
   OurWorkInfo,
   WorkCategory,
 } from "@prisma/client";
-import WorksPage from "./works";
 import WorksCatagories from "./works-catagories";
 import { WorksColumn } from "./works-column";
 import CMSInfoPage from "./cms-info-page";
 import { CMSForm } from "@/components/ui/cms-form";
+import WorksCollectionPage from "./works-collection";
+import Works from "./works";
 
 interface OurWorksClientProps {
   initialcmsForm:
@@ -114,12 +115,13 @@ const OurWorksClient = ({
         cmsId={initialcmsForm?.id || ""}
         workCategories={initialcmsForm?.workCategories ?? []}
       />
-      <WorksPage
+      <WorksCollectionPage
         cmsId={initialcmsForm?.id || ""}
         ourWorks={ourWorks}
         currentPage={currentPage}
         totalPages={totalPages}
       />
+      <Works cmsId={initialcmsForm?.id || ""} work={ourWorks || []} />
     </>
   );
 };

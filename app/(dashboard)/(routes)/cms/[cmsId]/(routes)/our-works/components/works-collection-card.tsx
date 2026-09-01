@@ -4,17 +4,17 @@ import { AlertModal } from "@/components/modals/alert-modal";
 import { WorksColumn } from "./works-column";
 import { Separator } from "@/components/ui/separator";
 import { Button } from "@/components/ui/button";
-import { Copy, Edit2, Trash } from "lucide-react";
+import { Copy, Edit2, Plus, Trash } from "lucide-react";
 import toast from "react-hot-toast";
 import axios from "axios";
 import { useParams, useRouter } from "next/navigation";
 import { useState } from "react";
 
-interface WorksCardProps {
+interface WorksCollectionCardProps {
   work: WorksColumn;
   cmsId: string;
 }
-const WorksCard = ({ work, cmsId }: WorksCardProps) => {
+const WorksCollectionCard = ({ work, cmsId }: WorksCollectionCardProps) => {
   const router = useRouter();
   const params = useParams();
   const [loading, setLoading] = useState(false);
@@ -27,6 +27,10 @@ const WorksCard = ({ work, cmsId }: WorksCardProps) => {
 
   const onEdit = (id: string) => {
     router.push(`/cms/${cmsId}/our-works/${id}`);
+  };
+
+  const onAddWork = (id: string) => {
+    router.push(`/cms/${cmsId}/our-works/${id}/new`);
   };
 
   const onDelete = async () => {
@@ -72,6 +76,14 @@ const WorksCard = ({ work, cmsId }: WorksCardProps) => {
 
           <div className="flex-1 flex items-center justify-end">
             <div className="flex space-x-2">
+              <Button
+                onClick={() => {
+                  onAddWork(work.id);
+                }}
+              >
+                <Plus className="h-4 w-4" />
+                <span className="hidden sm:block ml-2">Add New Work</span>
+              </Button>
               <Button variant="outline" onClick={() => onCopy(work.id)}>
                 <Copy className="h-4 w-4" />
               </Button>
@@ -94,4 +106,4 @@ const WorksCard = ({ work, cmsId }: WorksCardProps) => {
   );
 };
 
-export default WorksCard;
+export default WorksCollectionCard;

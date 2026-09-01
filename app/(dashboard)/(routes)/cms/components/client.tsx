@@ -7,20 +7,23 @@ import { Plus } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { CMSColumn } from "./cms-column";
 
-interface CMSClientProps{
-  data:CMSColumn[],
+interface CMSClientProps {
+  data: CMSColumn[];
+  allTypesCreated: boolean;
 }
 
-const CMSClient = ({data}:CMSClientProps) => {
+const CMSClient = ({ data, allTypesCreated }: CMSClientProps) => {
   const router = useRouter();
   return (
     <>
       <div className="flex items-center justify-between">
         <Heading title="CMS Pages" description="Manage static content pages." />
-        <Button onClick={() => router.push(`/cms/new`)}>
-          <Plus className="h-4 w-4" />
-          <span className="hidden sm:block ml-2">Add New Page</span>
-        </Button>
+        {!allTypesCreated && (
+          <Button onClick={() => router.push(`/cms/new`)}>
+            <Plus className="h-4 w-4" />
+            <span className="hidden sm:block ml-2">Add New Page</span>
+          </Button>
+        )}
       </div>
       <Separator />
       <CMSTable data={data} />

@@ -45,7 +45,6 @@ const WorksCatagories = ({ workCategories, cmsId }: WorkCategoriesProps) => {
 
   return (
     <>
-      
       <PortfolioModal
         cmsId={cmsId as string}
         initialData={selectedCategory}
@@ -55,7 +54,7 @@ const WorksCatagories = ({ workCategories, cmsId }: WorkCategoriesProps) => {
       />
       <div className="flex items-center justify-between pt-4">
         <SubHeading
-          title="Portfolio Works categories"
+          title="Portfolio categories"
           description="Manage your portfolio categoreis"
         />
         <Button

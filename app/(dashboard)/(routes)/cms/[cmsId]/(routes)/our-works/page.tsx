@@ -34,6 +34,7 @@ const OurWorksPage = async ({
       },
       include: {
         category: true,
+        works:true,
       },
       skip: (currentPage - 1) * pageSize,
       take: pageSize,
@@ -56,8 +57,16 @@ const OurWorksPage = async ({
     title: work.title,
     subTitle: work.subTitle,
     category: work.category.category,
+    works: work.works.map((item) => ({
+      id: item.id,
+      ourWorkId: item.ourWorkId,
+      title: item.title,
+      description: item.description || "",
+      createdAt: format(item.createdAt, "MMMM do, yyyy"),
+    })),
     createdAt: format(work.createdAt, "MMMM do, yyyy"),
   }));
+
 
   return (
     <div className="flex-col">
